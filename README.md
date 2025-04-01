@@ -16,7 +16,6 @@
 - password
 - phone
 - status
-- role_id 一个用户有一个role即可
 - last_login_time
 - last_login_ip
 - remark
