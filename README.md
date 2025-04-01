@@ -1,3 +1,11 @@
+## project logs
+- composer require --dev barryvdh/laravel-ide-helper
+- php artisan ide-helper:generate
+- composer require kalnoy/nestedset
+- composer require tymon/jwt-auth
+- composer require barryvdh/laravel-debugbar --dev
+  - 不需任何配置，就会显示在页面上，（开发API，好像不需要）
+
 ## table design
 ### users table
 - id
@@ -47,6 +55,7 @@
 - path
 - component
 - meta: json {icon,title,affixTab,order,badge,badgeType,badgeVariants,iframeSrc}
+- nestedset()
 - timestamps()
 
 ### dept table
@@ -55,4 +64,5 @@
 - name
 - status
 - timestamps()
+- nestedset()
 - remark

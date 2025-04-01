@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JwtAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('jwt-login', [JwtAuthController::class, 'login']);
+    Route::post('jwt-logout', [JwtAuthController::class, 'logout']);
+    Route::post('jwt-refresh', [JwtAuthController::class, 'refresh']);
+    Route::post('jwt-me', [JwtAuthController::class, 'me']);
 });

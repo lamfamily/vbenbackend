@@ -17,3 +17,8 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('make-user', function() {
+    $users = \App\Models\User::factory()->count(10)->create();
+    $this->info("User created!");
+});

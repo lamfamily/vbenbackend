@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\ApiCodeEnum;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return api_res(ApiCodeEnum::FORBIDDEN, 'Access Denied');
+    // return view('welcome');
 });
