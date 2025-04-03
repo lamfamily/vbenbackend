@@ -7,12 +7,12 @@ if (!function_exists('api_res')) {
      * @param array $data
      * @return \Illuminate\Http\JsonResponse
      */
-    function api_res(int $code = 0, string $msg = '', array $data = []): \Illuminate\Http\JsonResponse
+    function api_res(int $code = 0, string $msg = '', $data = [], int $status = 200): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'code' => $code,
             'message' => $msg,
             'data' => $data,
-        ]);
+        ], $status);
     }
 }

@@ -70,6 +70,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         'prefix' => 'system',
     ], function() {
         Route::get('role/list', [RoleController::class, 'index']);
+        Route::get('menu/list', [MenuController::class, 'index']);
+        Route::get('menu/name-exists', [MenuController::class, 'checkNameExists']);
+        Route::get('menu/path-exists', [MenuController::class, 'checkPathExists']);
     });
 
     // 权限管理

@@ -24,9 +24,7 @@ class MenuController extends Controller
     {
         $menus = Menu::with('children')->whereNull('parent_id')->orderBy('order')->get();
 
-        return api_res(APICodeEnum::SUCCESS, __('获取菜单成功'), [
-            'menus' => MenuResource::collection($menus)
-        ]);
+        return api_res(APICodeEnum::SUCCESS, __('获取菜单成功'), MenuResource::collection($menus));
     }
 
     /**
@@ -140,5 +138,47 @@ class MenuController extends Controller
         return api_res(APICodeEnum::SUCCESS, __('菜单删除成功'), [
             'menu' => new MenuResource($menu)
         ]);
+    }
+
+
+    public function checkNameExists(Request $request)
+    {
+        $all_data = $request->all();
+
+        $id = $all_data['id'] ?? '';
+        $name = $all_data['name'] ?? '';
+
+        if ($id) {
+            $menu = Menu::where('name', $name)->where('id', '!=', $id)->first();
+        } else {
+            $menu = Menu::where('name', $name)->first();
+        }
+
+        if ($menu) {
+            return api_res(APICodeEnum::EXCEPTION, __('菜单名称已存在'));
+        } else {
+            return api_res(APICodeEnum::SUCCESS, __('菜单名称可用'));
+        }
+    }
+
+
+    public function checkPathExists(Request $request)
+    {
+        $all_data = $request->all();
+
+        $id = $all_data['id'] ?? '';
+        $name = $all_data['name'] ?? '';
+
+        if ($id) {
+            $menu = Menu::where('url', $name)->where('id', '!=', $id)->first();
+        } else {
+            $menu = Menu::where('url', $name)->first();
+        }
+
+        if ($menu) {
+            return api_res(APICodeEnum::EXCEPTION, __('菜单路径已存在'));
+        } else {
+            return api_res(APICodeEnum::SUCCESS, __('菜单路径可用'));
+        }
     }
 }

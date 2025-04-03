@@ -32,6 +32,14 @@ class Handler extends ExceptionHandler
         // renderable 关注用户体验和响应展示（前台）
         $this->renderable(function (Throwable $e, $request) {
             if ($request->is('api/*')) {
+
+                // 需要返回401状态码给vben
+                if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                    return api_res(APICodeEnum::EXCEPTION, __('未授权'), [
+                        'message' => $e->getMessage()
+                    ], 401);
+                }
+
                 return api_res(APICodeEnum::EXCEPTION, $e->getMessage());
             }
         });

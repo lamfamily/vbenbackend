@@ -14,20 +14,37 @@ class MenuResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $meta = json_decode($this->meta, true);
+
+        if (!isset($meta['title'])) {
+            $meta['title'] = $this->name;
+        }
+
+        if (!isset($meta['icon'])) {
+            $meta['icon'] = $this->icon;
+        }
+
+        if (!isset($meta['order'])) {
+            $meta['order'] = $this->order;
+        }
+
         return [
             'id' => $this->id,
+            'pid' => $this->parent_id,
             'name' => $this->name,
-            'slug' => $this->slug,
-            'url' => $this->url,
-            'route_name' => $this->route_name,
+            'status' => $this->status,
+            'type' => $this->type,
             'icon' => $this->icon,
-            'parent_id' => $this->parent_id,
-            'permission' => $this->permission,
-            'order' => $this->order,
-            'active' => $this->active,
+            'path' => $this->url,
+            'component' => $this->component,
+            'authCode' => $this->permission, // 权限标识
+            'meta' => $meta,
+            // 'permission' => $this->permission,
+            // 'order' => $this->order,
+            // 'active' => $this->active,
             'children' => MenuResource::collection($this->whenLoaded('children')),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            // 'created_at' => $this->created_at,
+            // 'updated_at' => $this->updated_at,
         ];
     }
 }

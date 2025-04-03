@@ -38,5 +38,10 @@
     "权限更新成功": "Permission updated successfully",
     "不能删除系统关键权限": "Cannot delete system critical permission",
     "权限删除成功": "Permission deleted successfully",
-    "获取权限成功": "Get permission successfully"
+    "获取权限成功": "Get permission successfully",
+    "菜单不存在": "Menu does not exist",
+    "菜单名称已存在": "Menu name already exists",
+    "菜单名称可用": "Menu name available",
+    "菜单路径已存在": "Menu path already exists",
+    "菜单路径可用": "Menu path available"
 }
