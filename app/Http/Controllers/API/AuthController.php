@@ -1,0 +1,122 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Enums\APICodeEnum;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+
+class AuthController extends Controller
+{
+    /** @var JWTGuard $auth */
+    protected $auth;
+
+    public function __construct()
+    {
+        $this->auth = auth();
+
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+
+    /**
+     * 用户注册
+     */
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // 默认分配用户角色
+        $user->assignRole('user');
+
+        return api_res(APICodeEnum::SUCCESS, __('用户注册成功'), [
+            'user' => new UserResource($user)
+        ]);
+    }
+
+    /**
+     * 用户登录
+     */
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
+                'errors' => $validator->errors()
+            ]);
+        }
+
+        $credentials = $request->only('email', 'password');
+
+        if (!$token = $this->auth->attempt($credentials)) {
+            return api_res(APICodeEnum::EXCEPTION, __('用户名或密码错误'));
+        }
+
+        return $this->respondWithToken($token, __('登录成功'));
+    }
+
+    /**
+     * 获取当前登录用户信息
+     */
+    public function me()
+    {
+        // 包含角色的permissions 和 用户的 permissions
+        $user = $this->auth->user()->load(['roles.permissions', 'permissions']);
+        return api_res(APICodeEnum::SUCCESS, __('获取用户信息成功'), [
+            'user' => new UserResource($user)
+        ]);
+    }
+
+    /**
+     * 用户登出
+     */
+    public function logout()
+    {
+        $this->auth->logout();
+        return api_res(APICodeEnum::SUCCESS, __('成功登出'));
+    }
+
+    /**
+     * 刷新Token
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken($this->auth->refresh(), __('Token刷新成功'));
+    }
+
+    /**
+     * 返回token响应
+     */
+    protected function respondWithToken($token, $msg)
+    {
+        return api_res(APICodeEnum::SUCCESS, $msg, [
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $this->auth->factory()->getTTL() * 60,
+            'user' => new UserResource($this->auth->user()->load('roles'))
+        ]);
+    }
+}

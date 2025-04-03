@@ -185,4 +185,13 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    // 自定义配置： 支持语言列表
+    'supported_locales' => [
+        'en',
+        'zh-CN',
+        'zh-TW',
+    ],
+
+    // 自定义配置： 默认语言
+    'fallback_locale' => 'en',
 ];

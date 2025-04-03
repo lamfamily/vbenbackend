@@ -3,6 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JwtAuthController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\MenuController;
+use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\RoleController;
+use App\Http\Controllers\API\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +24,7 @@ use App\Http\Controllers\JwtAuthController;
 //     return $request->user();
 // });
 
+// for testing jwt-auth
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -27,4 +33,35 @@ Route::group([
     Route::post('jwt-logout', [JwtAuthController::class, 'logout']);
     Route::post('jwt-refresh', [JwtAuthController::class, 'refresh']);
     Route::post('jwt-me', [JwtAuthController::class, 'me']);
+});
+
+// 公开的API
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+});
+
+// 需要认证的API
+Route::group(['middleware' => 'auth:api'], function () {
+    // 认证相关
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
+        Route::get('me', [AuthController::class, 'me']);
+    });
+
+    // 用户菜单
+    Route::get('user-menu', [MenuController::class, 'userMenu']);
+
+    // 菜单管理
+    Route::apiResource('menus', MenuController::class);
+
+    // 用户管理
+    Route::apiResource('users', UserController::class);
+
+    // 角色管理
+    Route::apiResource('roles', RoleController::class);
+
+    // 权限管理
+    Route::apiResource('permissions', PermissionController::class);
 });

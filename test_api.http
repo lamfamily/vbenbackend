@@ -5,7 +5,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "email": "turner.louie@example.org",
+    "email": "admin@example.com",
     "password": "password"
 }
 
@@ -26,3 +26,235 @@ POST https://vbenbackend.test.com/api/auth/jwt-logout
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3ZiZW5iYWNrZW5kLnRlc3QuY29tL2FwaS9hdXRoL2p3dC1sb2dpbiIsImlhdCI6MTc0MzQ3NzgwNCwiZXhwIjoxNzQzNDgxNDA0LCJuYmYiOjE3NDM0Nzc4MDQsImp0aSI6IjExaWFxbEZaV1k3cnc0VFgiLCJzdWIiOiIxIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.V7dBZnNXP0E06l1J8lO4DXIsOyoY4XDMHQ4J_maKhCI
 Content-Type: application/json
 Accept: application/json
+
+
+### test login
+POST https://vbenbackend.test.com/api/auth/login
+Content-Type: application/json
+Accept: application/json
+Accept-Language: zh-TW
+
+{
+    "email": "admin@example.com",
+    "password": "password"
+}
+
+# {
+#     "email": "lam1@gmail.com",
+#     "password": "123456"
+# }
+
+
+### test register
+POST http://vbenbackend.test.com/api/auth/register
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "lam2",
+    "email": "lam2@gmail.com",
+    "password": "123456",
+    "password_confirmation": "123456"
+}
+
+### test get user info
+GET http://vbenbackend.test.com/api/auth/me
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+### test logout
+POST http://vbenbackend.test.com/api/auth/logout
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+
+### test refresh a token
+POST http://vbenbackend.test.com/api/auth/refresh
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM0OTkzNzQsImV4cCI6MTc0MzUwMjk3NCwibmJmIjoxNzQzNDk5Mzc0LCJqdGkiOiJ1RTQ3MnJDbzBYa1pueVppIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.jqmnWc7ZV554tGdwWBbh94E2kJ4jc_G6nTcGuoQqXzw
+
+
+### test get all menus
+GET http://vbenbackend.test.com/api/menus
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+### get user own menus
+GET http://vbenbackend.test.com/api/user-menu
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+### get single menu
+GET http://vbenbackend.test.com/api/menus/8
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+### create menu
+POST http://vbenbackend.test.com/api/menus
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+{
+    "name": "New Menu",
+    "slug": "new-menu",
+    "url": "/new",
+    "icon": "fa fa-new",
+    "permission": "some_permission",
+    "order": 5
+}
+
+### update menu
+PUT http://vbenbackend.test.com/api/menus/12
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+{
+    "name": "New Menu 2",
+    "slug": "new-menu 2",
+    "url": "/new",
+    "icon": "fa fa-new",
+    "permission": "some_permission",
+    "order": 5
+}
+
+### delete menu
+DELETE http://vbenbackend.test.com/api/menus/12
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+
+### get user list
+GET http://vbenbackend.test.com/api/users
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+
+### get single user
+GET http://vbenbackend.test.com/api/users/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+
+### create user
+POST http://vbenbackend.test.com/api/users
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+{
+    "name": "New User",
+    "email": "new@example.com",
+    "password": "password",
+    "roles": ["user"]
+}
+
+
+### update user
+PUT http://vbenbackend.test.com/api/users/6
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+{
+    "name": "New User2",
+    "email": "new@example.com",
+    "password": "password",
+    "roles": ["user"]
+}
+
+### delete user
+DELETE http://vbenbackend.test.com/api/users/6
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+### get all roles
+GET http://vbenbackend.test.com/api/roles
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+### get specify role
+GET http://vbenbackend.test.com/api/roles/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+### create role
+POST http://vbenbackend.test.com/api/roles
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+{
+    "name": "new-role",
+    "permissions": ["view articles", "create articles"]
+}
+
+### update role
+PUT http://vbenbackend.test.com/api/roles/6
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+{
+    "name": "new-role2",
+    "permissions": ["view articles", "create articles"]
+}
+
+### delete role
+DELETE http://vbenbackend.test.com/api/roles/7
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+
+### get all permissions
+GET http://vbenbackend.test.com/api/permissions
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+
+### get specify permission
+GET http://vbenbackend.test.com/api/permissions/1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+### create permission
+POST http://vbenbackend.test.com/api/permissions
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+{
+    "name": "new_permission"
+}
+
+### update permission
+PUT http://vbenbackend.test.com/api/permissions/12
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
+
+{
+    "name": "new_permission2"
+}
+
+### delete permission
+DELETE http://vbenbackend.test.com/api/permissions/12
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbGFyYXZlbDEwLW1lbnUtcGVybWlzc2lvbi1hcGkudGVzdC5jb20vYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3NDM1NTk0MzUsImV4cCI6MTc0MzU2MzAzNSwibmJmIjoxNzQzNTU5NDM1LCJqdGkiOiJQYTNrejdrV3NFMEV4OGhxIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.gs9AuRsOdNEsvnET6d7XcwJoKtJ9No6fA-koD9X4I84
