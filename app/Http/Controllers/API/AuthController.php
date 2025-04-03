@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use App\Enums\APICodeEnum;
+use Tymon\JWTAuth\JWTGuard;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -84,7 +84,9 @@ class AuthController extends Controller
     public function me()
     {
         // 包含角色的permissions 和 用户的 permissions
-        $user = $this->auth->user()->load(['roles.permissions', 'permissions']);
+        /** @var User $user_model */
+        $user_model = $this->auth->user();
+        $user = $user_model->load(['roles.permissions', 'permissions']);
         return api_res(APICodeEnum::SUCCESS, __('获取用户信息成功'), [
             'user' => new UserResource($user)
         ]);
@@ -112,11 +114,14 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token, $msg)
     {
+        /** @var User $user_model */
+        $user_model = $this->auth->user();
+
         return api_res(APICodeEnum::SUCCESS, $msg, [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => $this->auth->factory()->getTTL() * 60,
-            'user' => new UserResource($this->auth->user()->load('roles'))
+            'user' => new UserResource($user_model->load('roles'))
         ]);
     }
 }
