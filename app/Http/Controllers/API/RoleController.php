@@ -25,7 +25,7 @@ class RoleController extends Controller
     {
         $roles = Role::with('permissions')->get();
         return api_res(APICodeEnum::SUCCESS, __('获取角色列表成功'), [
-            'roles' => RoleResource::collection($roles)
+            'items' => RoleResource::collection($roles)
         ]);
     }
 

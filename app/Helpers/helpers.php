@@ -11,7 +11,7 @@ if (!function_exists('api_res')) {
     {
         return response()->json([
             'code' => $code,
-            'msg' => $msg,
+            'message' => $msg,
             'data' => $data,
         ]);
     }

@@ -59,7 +59,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'username' => 'required|string',
             'password' => 'required|string|min:6',
         ]);
 
@@ -69,13 +69,23 @@ class AuthController extends Controller
             ]);
         }
 
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (!$token = $this->auth->attempt($credentials)) {
             return api_res(APICodeEnum::EXCEPTION, __('用户名或密码错误'));
         }
 
-        return $this->respondWithToken($token, __('登录成功'));
+        /** @var User $user_model */
+        $user_model = $this->auth->user();
+
+        $ret_data = [
+            'realName' => $user_model->name,
+            'roles' => $user_model->roles->pluck('name'),
+            'username' => $user_model->username,
+            'accessToken' => $token,
+        ];
+
+        return api_res(APICodeEnum::SUCCESS, __('登录成功'), $ret_data);
     }
 
     /**
@@ -87,9 +97,14 @@ class AuthController extends Controller
         /** @var User $user_model */
         $user_model = $this->auth->user();
         $user = $user_model->load(['roles.permissions', 'permissions']);
-        return api_res(APICodeEnum::SUCCESS, __('获取用户信息成功'), [
-            'user' => new UserResource($user)
-        ]);
+
+        $ret_data = [
+            'realName' => $user->name,
+            'roles' => $user->roles->pluck('name'),
+            'username' => $user->username,
+        ];
+
+        return api_res(APICodeEnum::SUCCESS, __('获取用户信息成功'), $ret_data);
     }
 
     /**
@@ -123,5 +138,13 @@ class AuthController extends Controller
             'expires_in' => $this->auth->factory()->getTTL() * 60,
             'user' => new UserResource($user_model->load('roles'))
         ]);
+    }
+
+
+    public function codes()
+    {
+        $ret_data = [];
+
+        return api_res(APICodeEnum::SUCCESS, __('获取权限码成功'), $ret_data);
     }
 }

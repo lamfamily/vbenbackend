@@ -48,7 +48,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('refresh', [AuthController::class, 'refresh']);
         Route::get('me', [AuthController::class, 'me']);
+        Route::get('codes', [AuthController::class, 'codes']);
     });
+
+    Route::get('user/info', [AuthController::class, 'me'])->middleware('auth:api');
 
     // 用户菜单
     Route::get('user-menu', [MenuController::class, 'userMenu']);
@@ -61,6 +64,13 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // 角色管理
     Route::apiResource('roles', RoleController::class);
+
+
+    Route::group([
+        'prefix' => 'system',
+    ], function() {
+        Route::get('role/list', [RoleController::class, 'index']);
+    });
 
     // 权限管理
     Route::apiResource('permissions', PermissionController::class);

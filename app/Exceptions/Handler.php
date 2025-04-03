@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Enums\ApiCodeEnum;
+use App\Enums\APICodeEnum;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -32,7 +32,7 @@ class Handler extends ExceptionHandler
         // renderable 关注用户体验和响应展示（前台）
         $this->renderable(function (Throwable $e, $request) {
             if ($request->is('api/*')) {
-                return api_res(ApiCodeEnum::BAD_REQUEST, $e->getMessage());
+                return api_res(APICodeEnum::EXCEPTION, $e->getMessage());
             }
         });
     }

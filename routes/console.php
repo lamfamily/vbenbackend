@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -18,7 +19,20 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('make-user', function() {
+Artisan::command('make-user', function () {
     $users = \App\Models\User::factory()->count(10)->create();
     $this->info("User created!");
+});
+
+
+Artisan::command('set-permission-for-admin', function () {
+    $admin_role = Role::where('name', 'admin')->first();
+
+    $admin_role->givePermissionTo('manage roles');
+    $admin_role->givePermissionTo('manage permissions');
+
+    echo "<pre>";
+    var_dump($admin_role->toArray(), $admin_role->getAllPermissions()->pluck('name')->toArray());
+    echo "</pre>";
+    exit();
 });
