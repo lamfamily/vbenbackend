@@ -7,5 +7,6 @@ return [
     'attributes' => [
         'email' => '電子郵箱',
         'password' => '密碼',
+        'username' => '用戶名',
     ],
 ];

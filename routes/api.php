@@ -38,7 +38,7 @@ Route::group([
 
 // 公开的API
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register']);
 });
 
@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('menu/list', [MenuController::class, 'index']);
         Route::get('menu/name-exists', [MenuController::class, 'checkNameExists']);
         Route::get('menu/path-exists', [MenuController::class, 'checkPathExists']);
+        Route::delete('menu/{id}', [MenuController::class, 'destroy']);
 
         Route::get('dept/list', [DeptController::class, 'index']);
         Route::post('dept', [DeptController::class, 'store']);

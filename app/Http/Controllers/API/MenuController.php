@@ -131,8 +131,19 @@ class MenuController extends Controller
     /**
      * 删除指定菜单
      */
-    public function destroy(Menu $menu)
+    public function destroy(Request $request, int $id)
     {
+        $menu = Menu::find($id);
+
+        if (!$menu) {
+            return api_res(APICodeEnum::EXCEPTION, __('菜单不存在'));
+        }
+
+        // 检查是否有子菜单
+        if ($menu->children()->exists() > 0) {
+            return api_res(APICodeEnum::EXCEPTION, __('请先删除子菜单'));
+        }
+
         $menu->delete();
 
         return api_res(APICodeEnum::SUCCESS, __('菜单删除成功'), [
