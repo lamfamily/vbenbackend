@@ -45,5 +45,9 @@
     "菜单路径已存在": "Menu path already exists",
     "菜单路径可用": "Menu path available",
     "获取部门列表成功": "Get department list successfully",
-    "部门创建成功": "Department created successfully"
+    "部门创建成功": "Department created successfully",
+    "部门名称已存在": "Department name already exists",
+    "上级部门不存在": "Parent department does not exist",
+    "请先删除子部门": "Please delete sub-departments first",
+    "部门删除成功": "Department deleted successfully"
 }
