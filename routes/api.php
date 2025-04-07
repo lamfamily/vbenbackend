@@ -2,11 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DeptController;
 use App\Http\Controllers\JwtAuthController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\MenuController;
-use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RoleController;
+use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\PermissionController;
 
 /*
@@ -70,9 +71,16 @@ Route::group(['middleware' => 'auth:api'], function () {
         'prefix' => 'system',
     ], function() {
         Route::get('role/list', [RoleController::class, 'index']);
+
         Route::get('menu/list', [MenuController::class, 'index']);
         Route::get('menu/name-exists', [MenuController::class, 'checkNameExists']);
         Route::get('menu/path-exists', [MenuController::class, 'checkPathExists']);
+
+        Route::get('dept/list', [DeptController::class, 'index']);
+        Route::post('dept', [DeptController::class, 'store']);
+        Route::get('dept/{dept}', [DeptController::class, 'show']);
+        Route::put('dept/{dept}', [DeptController::class, 'update']);
+        Route::delete('dept/{id}', [DeptController::class, 'destroy']);
     });
 
     // 权限管理

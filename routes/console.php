@@ -3,6 +3,7 @@
 use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Spatie\Permission\Models\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,11 @@ Artisan::command('set-permission-for-admin', function () {
 
     $admin_role->givePermissionTo('manage roles');
     $admin_role->givePermissionTo('manage permissions');
+
+    $permission_name = 'manage depts';
+    // Permission::create(['name' => $permission_name]);
+
+    $admin_role->givePermissionTo($permission_name);
 
     echo "<pre>";
     var_dump($admin_role->toArray(), $admin_role->getAllPermissions()->pluck('name')->toArray());

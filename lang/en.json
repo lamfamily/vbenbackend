@@ -43,5 +43,7 @@
     "菜单名称已存在": "Menu name already exists",
     "菜单名称可用": "Menu name available",
     "菜单路径已存在": "Menu path already exists",
-    "菜单路径可用": "Menu path available"
+    "菜单路径可用": "Menu path available",
+    "获取部门列表成功": "Get department list successfully",
+    "部门创建成功": "Department created successfully"
 }
