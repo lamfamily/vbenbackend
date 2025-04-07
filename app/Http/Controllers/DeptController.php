@@ -42,6 +42,21 @@ class DeptController extends Controller
             ]);
         }
 
+        // 校验name 是否存在
+        $exists = Dept::where('name', $request->name)->exists();
+        if ($exists) {
+            return api_res(APICodeEnum::EXCEPTION, __('部门名称已存在'));
+        }
+
+        // 校验pid 是否存在
+        if ($request->pid) {
+            $parentDept = Dept::find($request->pid);
+            if (!$parentDept) {
+                return api_res(APICodeEnum::EXCEPTION, __('上级部门不存在'));
+            }
+        }
+
+
         // 创建一个新的数据数组，将pid映射为parent_id
         $data = $request->all();
         if (isset($data['pid'])) {
@@ -76,6 +91,21 @@ class DeptController extends Controller
             return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
                 'errors' => $validator->errors()
             ]);
+        }
+
+        // 校验name 是否存在
+        $exists = Dept::where('name', $request->name)->where('id', '!=', $dept->id)->exists();
+
+        if ($exists) {
+            return api_res(APICodeEnum::EXCEPTION, __('部门名称已存在'));
+        }
+
+        // 校验pid 是否存在
+        if ($request->pid) {
+            $parentDept = Dept::find($request->pid);
+            if (!$parentDept) {
+                return api_res(APICodeEnum::EXCEPTION, __('上级部门不存在'));
+            }
         }
 
         // 创建一个新的数据数组，将pid映射为parent_id
