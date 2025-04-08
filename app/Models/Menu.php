@@ -18,8 +18,17 @@ class Menu extends Model
         'parent_id',
         'permission',
         'order',
-        'active'
+        'active',
+        'type',
+        'component',
+        'route_name',
+        'meta',
     ];
+
+    protected $casts = [
+        'meta' => 'array',
+    ];
+
 
     /**
      * 获取父菜单

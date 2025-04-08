@@ -108,29 +108,59 @@ POST {{baseurl}}/system/menu
 Authorization: Bearer {{token}}
 
 {
-    "name": "新菜单2",
-    "slug": "new menu2",
-    "type": "catalog",
-    "url": "/new-menu-url",
-    "component": null,
-    "route_name": "new_menu_route",
-    "icon": "aaa",
-    "parent_id": 1,
-    "permission": "bbb",
-    "order": 100,
-    "active": 0
+    "name": "test",
+    "path": "/test",
+    "type": "menu",
+    "status": 1,
+    "pid": 1,
+    "meta": {
+        "title": "测试菜单",
+        "icon": "carbon:add-filled",
+        "activeIcon": "carbon:apps",
+        "affixTab": true
+    },
+    "component": "/_core/about/index"
 }
 
+# {
+#     "name": "新菜单2",
+#     "slug": "new menu2",
+#     "type": "catalog",
+#     "url": "/new-menu-url",
+#     "component": null,
+#     "route_name": "new_menu_route",
+#     "icon": "aaa",
+#     "parent_id": 1,
+#     "permission": "bbb",
+#     "order": 100,
+#     "active": 0
+# }
+
 ### update menu
-PUT {{baseurl}}/system/menu/12
+PUT {{baseurl}}/system/menu/21
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
 {
-    "name": "新菜单11",
-    "slug": "new menu1",
-    "permission": "ccc"
+    "name": "test",
+    "path": "/test",
+    "type": "menu",
+    "status": 1,
+    "pid": 1,
+    "meta": {
+        "title": "测试菜单",
+        "icon": "carbon:add-filled",
+        "activeIcon": "carbon:apps",
+        "affixTab": true
+    },
+    "component": "/_core/about/index"
 }
+
+# {
+#     "name": "新菜单11",
+#     "slug": "new menu1",
+#     "permission": "ccc"
+# }
 
 ### del menu
 DELETE {{baseurl}}/system/menu/3
@@ -143,7 +173,12 @@ GET {{baseurl}}/system/menu/3
 Authorization: Bearer {{token}}
 
 ###
-GET {{baseurl}}/system/menu/name-exists?name=
+GET {{baseurl}}/system/menu/name-exists?name=test
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+###
+GET {{baseurl}}/system/menu/path-exists?path=%2Ftestmenu
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 

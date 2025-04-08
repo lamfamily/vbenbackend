@@ -14,7 +14,8 @@ class MenuResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $meta = json_decode($this->meta, true);
+        // $meta = json_decode($this->meta, true);
+        $meta = $this->meta ?? [];
 
         if (!isset($meta['title'])) {
             $meta['title'] = __($this->name);

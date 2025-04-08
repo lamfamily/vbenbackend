@@ -4,11 +4,12 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Menu;
 use App\Enums\APICodeEnum;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MenuResource;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -75,11 +76,20 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:menus',
+        $all_data = $request->all();
+
+        $validator = Validator::make($all_data, [
+            'name' => 'required|string|unique:menus|max:255',
+            // 'slug' => 'required|string|max:255|unique:menus',
             'order' => 'integer|min:0',
+            'meta' => 'nullable|array',
         ]);
+
+        $all_data['slug'] = Str::slug($all_data['name']);
+        $all_data['url'] = $all_data['path'] ?? '';
+        $all_data['parent_id'] = $all_data['pid'] ?? null;
+        $all_data['active'] = $all_data['status'] ?? 1;
+        $all_data['permission'] = $all_data['authCode'] ?? '';
 
         if ($validator->fails()) {
             return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
@@ -87,7 +97,7 @@ class MenuController extends Controller
             ]);
         }
 
-        $menu = Menu::create($request->all());
+        $menu = Menu::create($all_data);
 
         return api_res(APICodeEnum::SUCCESS, __('菜单创建成功'), [
             'menu' => new MenuResource($menu)
@@ -108,16 +118,32 @@ class MenuController extends Controller
      */
     public function update(Request $request, Menu $menu)
     {
-        $validator = Validator::make($request->all(), [
+        $all_data = $request->all();
+        $validator = Validator::make($all_data, [
             'name' => 'required|string|max:255',
             // 'order' => 'integer|min:0',
-            'slug' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('menus')->ignore($menu->id),
-            ]
+            // 'slug' => [
+            //     'required',
+            //     'string',
+            //     'max:255',
+            //     Rule::unique('menus')->ignore($menu->id),
+            // ]
         ]);
+
+        $all_data['slug'] = Str::slug($all_data['name']);
+
+        if (isset($all_data['path'])) {
+            $all_data['url'] = $all_data['path'];
+        }
+        if (isset($all_data['pid'])) {
+            $all_data['parent_id'] = $all_data['pid'];
+        }
+        if (isset($all_data['status'])) {
+            $all_data['active'] = $all_data['status'];
+        }
+        if (isset($all_data['authCode'])) {
+            $all_data['permission'] = $all_data['authCode'];
+        }
 
         if ($validator->fails()) {
             return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
@@ -125,7 +151,7 @@ class MenuController extends Controller
             ]);
         }
 
-        $menu->update($request->all());
+        $menu->update($all_data);
 
         return api_res(APICodeEnum::SUCCESS, __('菜单更新成功'), [
             'menu' => new MenuResource($menu)
@@ -169,10 +195,12 @@ class MenuController extends Controller
             $menu = Menu::where('name', $name)->first();
         }
 
+        $is_menu_exists = $menu ? true : false;
+
         if ($menu) {
-            return api_res(APICodeEnum::EXCEPTION, __('菜单名称已存在'));
+            return api_res(APICodeEnum::EXCEPTION, __('菜单名称已存在'), $is_menu_exists);
         } else {
-            return api_res(APICodeEnum::SUCCESS, __('菜单名称可用'));
+            return api_res(APICodeEnum::SUCCESS, __('菜单名称可用'), $is_menu_exists);
         }
     }
 
@@ -182,18 +210,20 @@ class MenuController extends Controller
         $all_data = $request->all();
 
         $id = $all_data['id'] ?? '';
-        $name = $all_data['name'] ?? '';
+        $path = $all_data['path'] ?? '';
 
         if ($id) {
-            $menu = Menu::where('url', $name)->where('id', '!=', $id)->first();
+            $menu = Menu::where('url', $path)->where('id', '!=', $id)->first();
         } else {
-            $menu = Menu::where('url', $name)->first();
+            $menu = Menu::where('url', $path)->first();
         }
 
+        $is_path_exists = $menu ? true : false;
+
         if ($menu) {
-            return api_res(APICodeEnum::EXCEPTION, __('菜单路径已存在'));
+            return api_res(APICodeEnum::EXCEPTION, __('菜单路径已存在'), $is_path_exists);
         } else {
-            return api_res(APICodeEnum::SUCCESS, __('菜单路径可用'));
+            return api_res(APICodeEnum::SUCCESS, __('菜单路径可用'), $is_path_exists);
         }
     }
 }
