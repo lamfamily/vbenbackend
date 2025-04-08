@@ -6,32 +6,6 @@ Accept: application/json
 
 @token = {{login.response.body.data.accessToken}}
 
-### test jwt: login
-
-POST {{baseurl}}/auth/jwt-login
-{{jsonHeaders}}
-
-{
-    "email": "admin@example.com",
-    "password": "password"
-}
-
-### test jwt: get user info
-POST {{baseurl}}/auth/jwt-me
-Authorization: Bearer {{token}}
-{{jsonHeaders}}
-
-### test jwt: refresh a token
-POST {{baseurl}}/auth/jwt-refresh
-Authorization: Bearer {{token}}
-{{jsonHeaders}}
-
-### test jwt: logout
-POST {{baseurl}}/auth/jwt-logout
-Authorization: Bearer {{token}}
-{{jsonHeaders}}
-
-
 ### test login
 # @name login
 POST {{baseurl}}/auth/login
@@ -39,17 +13,17 @@ POST {{baseurl}}/auth/login
 Accept-Language: zh-TW
 
 {
-    "username": "admin",
+    "username": "super",
     "password": "password"
 }
 
 # {
-#     "username": "lam2",
-#     "password": "123456"
+#     "username": "admin",
+#     "password": "password"
 # }
 
 # {
-#     "email": "lam1@gmail.com",
+#     "username": "lam2",
 #     "password": "123456"
 # }
 
@@ -59,8 +33,8 @@ POST {{baseurl}}/auth/register
 {{jsonHeaders}}
 
 {
-    "name": "lam2",
-    "email": "lam2@gmail.com",
+    "name": "super",
+    "email": "lam3@gmail.com",
     "password": "123456",
     "password_confirmation": "123456"
 }
@@ -108,8 +82,8 @@ POST {{baseurl}}/system/menu
 Authorization: Bearer {{token}}
 
 {
-    "name": "test",
-    "path": "/test",
+    "name": "test1",
+    "path": "/test1",
     "type": "menu",
     "status": 1,
     "pid": 1,
@@ -119,7 +93,8 @@ Authorization: Bearer {{token}}
         "activeIcon": "carbon:apps",
         "affixTab": true
     },
-    "component": "/_core/about/index"
+    "component": "/_core/about/index",
+    "authCode": "test1"
 }
 
 # {
@@ -137,24 +112,41 @@ Authorization: Bearer {{token}}
 # }
 
 ### update menu
-PUT {{baseurl}}/system/menu/21
+PUT {{baseurl}}/system/menu/30
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
 {
-    "name": "test",
-    "path": "/test",
+    "name": "test1",
+    "path": "/test1",
     "type": "menu",
     "status": 1,
     "pid": 1,
     "meta": {
-        "title": "测试菜单",
+        "title": "测试菜单2",
         "icon": "carbon:add-filled",
         "activeIcon": "carbon:apps",
         "affixTab": true
     },
-    "component": "/_core/about/index"
+    "component": "/_core/about/index",
+    "authCode": "test111"
 }
+
+
+# {
+#     "name": "test",
+#     "path": "/test",
+#     "type": "menu",
+#     "status": 1,
+#     "pid": 1,
+#     "meta": {
+#         "title": "测试菜单",
+#         "icon": "carbon:add-filled",
+#         "activeIcon": "carbon:apps",
+#         "affixTab": true
+#     },
+#     "component": "/_core/about/index",
+# }
 
 # {
 #     "name": "新菜单11",
@@ -163,7 +155,7 @@ Authorization: Bearer {{token}}
 # }
 
 ### del menu
-DELETE {{baseurl}}/system/menu/3
+DELETE {{baseurl}}/system/menu/30
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
@@ -185,44 +177,6 @@ Authorization: Bearer {{token}}
 
 ### get user own menus
 GET {{baseurl}}/user-menu
-{{jsonHeaders}}
-Authorization: Bearer {{token}}
-
-### get single menu
-GET {{baseurl}}/menus/8
-{{jsonHeaders}}
-Authorization: Bearer {{token}}
-
-### create menu
-POST {{baseurl}}/menus
-{{jsonHeaders}}
-Authorization: Bearer {{token}}
-
-{
-    "name": "New Menu",
-    "slug": "new-menu",
-    "url": "/new",
-    "icon": "fa fa-new",
-    "permission": "some_permission",
-    "order": 5
-}
-
-### update menu
-PUT {{baseurl}}/menus/12
-{{jsonHeaders}}
-Authorization: Bearer {{token}}
-
-{
-    "name": "New Menu 2",
-    "slug": "new-menu 2",
-    "url": "/new",
-    "icon": "fa fa-new",
-    "permission": "some_permission",
-    "order": 5
-}
-
-### delete menu
-DELETE {{baseurl}}/menus/11
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 

@@ -28,7 +28,14 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            // 'name' => 'required|string|max:255',
+            'name' => [
+                'required',
+                'string',
+                'min:6',
+                'max:255',
+                'regex:/^[\p{Han}a-zA-Z0-9_]+$/u', // 允许汉字、字母、数字和下划线
+            ],
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -77,6 +84,10 @@ class AuthController extends Controller
 
         /** @var User $user_model */
         $user_model = $this->auth->user();
+
+        if ($user_model->status == 0) {
+            return api_res(APICodeEnum::EXCEPTION, __('用户已被禁用'));
+        }
 
         $ret_data = [
             'realName' => $user_model->name,

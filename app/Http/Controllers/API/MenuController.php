@@ -4,11 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Menu;
 use App\Enums\APICodeEnum;
+use App\Enums\MenuTypeEnum;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MenuResource;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
 class MenuController extends Controller
@@ -80,16 +83,33 @@ class MenuController extends Controller
 
         $validator = Validator::make($all_data, [
             'name' => 'required|string|unique:menus|max:255',
+            'path' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('menus', 'url')->where(function ($query) use ($all_data) {
+                    return $query->where('url', $all_data['path']);
+                }),
+            ],
+            'type' => [
+                'required',
+                'string',
+                // 'in:menu,button',
+                Rule::in(MenuTypeEnum::getKeys()),
+            ],
             // 'slug' => 'required|string|max:255|unique:menus',
             'order' => 'integer|min:0',
             'meta' => 'nullable|array',
+            // 校验authCode是否唯一
+            'authCode' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('permissions', 'name')->where(function ($query) use ($all_data) {
+                    return $query->where('name', $all_data['authCode']);
+                }),
+            ],
         ]);
-
-        $all_data['slug'] = Str::slug($all_data['name']);
-        $all_data['url'] = $all_data['path'] ?? '';
-        $all_data['parent_id'] = $all_data['pid'] ?? null;
-        $all_data['active'] = $all_data['status'] ?? 1;
-        $all_data['permission'] = $all_data['authCode'] ?? '';
 
         if ($validator->fails()) {
             return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
@@ -97,7 +117,22 @@ class MenuController extends Controller
             ]);
         }
 
+        $all_data['slug'] = Str::slug($all_data['name']);
+        $all_data['url'] = $all_data['path'] ?? '';
+        $all_data['parent_id'] = $all_data['pid'] ?? null;
+        $all_data['active'] = $all_data['status'] ?? 1;
+        $all_data['permission'] = $all_data['authCode'] ?? '';
+
+        DB::beginTransaction();
+
         $menu = Menu::create($all_data);
+
+        // 如果authCode不为空，则创建权限
+        if ($menu->permission) {
+            $permission = Permission::create(['name' => $menu->permission]);
+        }
+
+        DB::commit();
 
         return api_res(APICodeEnum::SUCCESS, __('菜单创建成功'), [
             'menu' => new MenuResource($menu)
@@ -128,7 +163,22 @@ class MenuController extends Controller
             //     'max:255',
             //     Rule::unique('menus')->ignore($menu->id),
             // ]
+            // 校验authCode是否唯一
+            'authCode' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('permissions', 'name')->where(function ($query) use ($all_data, $menu) {
+                    return $query->where('name', $all_data['authCode'])->where('name', '!=', $menu->permission);
+                }),
+            ],
         ]);
+
+        if ($validator->fails()) {
+            return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
+                'errors' => $validator->errors()
+            ]);
+        }
 
         $all_data['slug'] = Str::slug($all_data['name']);
 
@@ -145,13 +195,24 @@ class MenuController extends Controller
             $all_data['permission'] = $all_data['authCode'];
         }
 
-        if ($validator->fails()) {
-            return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
-                'errors' => $validator->errors()
-            ]);
-        }
+        DB::beginTransaction();
+
+        $old_permission = Permission::where('name', $menu->permission)->first();
 
         $menu->update($all_data);
+
+        if (!$old_permission && $menu->permission) {
+            // 如果没有旧权限但有新权限，则创建新权限
+            $permission = Permission::create(['name' => $menu->permission]);
+        } elseif ($old_permission && !$menu->permission) {
+            // 如果有旧权限但没有新权限，则删除旧权限
+            $old_permission->delete();
+        } elseif ($old_permission && $menu->permission) {
+            // 如果有旧权限且有新权限，则更新旧权限
+            $old_permission->update(['name' => $menu->permission]);
+        }
+
+        DB::commit();
 
         return api_res(APICodeEnum::SUCCESS, __('菜单更新成功'), [
             'menu' => new MenuResource($menu)
@@ -174,7 +235,19 @@ class MenuController extends Controller
             return api_res(APICodeEnum::EXCEPTION, __('请先删除子菜单'));
         }
 
+        DB::beginTransaction();
+
         $menu->delete();
+
+        // 删除权限
+        if ($menu->permission) {
+            $permission = Permission::where('name', $menu->permission)->first();
+            if ($permission) {
+                $permission->delete();
+            }
+        }
+
+        DB::commit();
 
         return api_res(APICodeEnum::SUCCESS, __('菜单删除成功'), [
             'menu' => new MenuResource($menu)
