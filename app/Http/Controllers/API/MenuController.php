@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MenuResource;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -22,7 +23,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        $menus = Menu::with('children')->whereNull('parent_id')->orderBy('order')->get();
+        $menus = Menu::with('allChildren')->whereNull('parent_id')->orderBy('order')->get();
 
         return api_res(APICodeEnum::SUCCESS, __('获取菜单成功'), MenuResource::collection($menus));
     }
@@ -33,7 +34,7 @@ class MenuController extends Controller
     public function userMenu()
     {
         $user = auth()->user();
-        $allMenus = Menu::with('children')
+        $allMenus = Menu::with('allChildren')
             ->whereNull('parent_id')
             ->where('active', true)
             ->orderBy('order')
@@ -98,10 +99,8 @@ class MenuController extends Controller
      */
     public function show(Menu $menu)
     {
-        $menu->load('children');
-        return api_res(APICodeEnum::SUCCESS, __('获取菜单成功'), [
-            'menu' => new MenuResource($menu)
-        ]);
+        $menu->load('allChildren');
+        return api_res(APICodeEnum::SUCCESS, __('获取菜单成功'), new MenuResource($menu));
     }
 
     /**
@@ -111,8 +110,13 @@ class MenuController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:menus,slug,' . $menu->id,
-            'order' => 'integer|min:0',
+            // 'order' => 'integer|min:0',
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('menus')->ignore($menu->id),
+            ]
         ]);
 
         if ($validator->fails()) {

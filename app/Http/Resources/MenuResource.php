@@ -17,7 +17,7 @@ class MenuResource extends JsonResource
         $meta = json_decode($this->meta, true);
 
         if (!isset($meta['title'])) {
-            $meta['title'] = $this->name;
+            $meta['title'] = __($this->name);
         }
 
         if (!isset($meta['icon'])) {
@@ -31,7 +31,7 @@ class MenuResource extends JsonResource
         return [
             'id' => $this->id,
             'pid' => $this->parent_id,
-            'name' => $this->name,
+            'name' => __($this->name),
             'status' => $this->status,
             'type' => $this->type,
             'icon' => $this->icon,
@@ -42,7 +42,7 @@ class MenuResource extends JsonResource
             // 'permission' => $this->permission,
             // 'order' => $this->order,
             // 'active' => $this->active,
-            'children' => MenuResource::collection($this->whenLoaded('children')),
+            'children' => MenuResource::collection($this->whenLoaded('allChildren')),
             // 'created_at' => $this->created_at,
             // 'updated_at' => $this->updated_at,
         ];

@@ -98,6 +98,51 @@ GET {{baseurl}}/system/menu/list
 Authorization: Bearer {{token}}
 
 ###
+GET {{baseurl}}/system/user-menu
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+### create menu
+POST {{baseurl}}/system/menu
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "新菜单2",
+    "slug": "new menu2",
+    "type": "catalog",
+    "url": "/new-menu-url",
+    "component": null,
+    "route_name": "new_menu_route",
+    "icon": "aaa",
+    "parent_id": 1,
+    "permission": "bbb",
+    "order": 100,
+    "active": 0
+}
+
+### update menu
+PUT {{baseurl}}/system/menu/12
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+{
+    "name": "新菜单11",
+    "slug": "new menu1",
+    "permission": "ccc"
+}
+
+### del menu
+DELETE {{baseurl}}/system/menu/3
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+###
+GET {{baseurl}}/system/menu/3
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+###
 GET {{baseurl}}/system/menu/name-exists?name=
 {{jsonHeaders}}
 Authorization: Bearer {{token}}

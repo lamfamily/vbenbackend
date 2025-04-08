@@ -75,7 +75,11 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::get('menu/list', [MenuController::class, 'index']);
         Route::get('menu/name-exists', [MenuController::class, 'checkNameExists']);
         Route::get('menu/path-exists', [MenuController::class, 'checkPathExists']);
+        Route::get('menu/{menu}', [MenuController::class, 'show']);
+        Route::get('user-menu', [MenuController::class, 'userMenu']);
         Route::delete('menu/{id}', [MenuController::class, 'destroy']);
+        Route::post('menu', [MenuController::class, 'store']);
+        Route::put('menu/{menu}', [MenuController::class, 'update']);
 
         Route::get('dept/list', [DeptController::class, 'index']);
         Route::post('dept', [DeptController::class, 'store']);
