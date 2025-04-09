@@ -12,15 +12,15 @@ POST {{baseurl}}/auth/login
 {{jsonHeaders}}
 Accept-Language: zh-TW
 
-{
-    "username": "super",
-    "password": "password"
-}
-
 # {
-#     "username": "admin",
+#     "username": "super",
 #     "password": "password"
 # }
+
+{
+    "username": "admin",
+    "password": "password"
+}
 
 # {
 #     "username": "lam2",
@@ -60,11 +60,6 @@ POST {{baseurl}}/auth/refresh
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
-
-### test get all menus
-GET {{baseurl}}/menus
-{{jsonHeaders}}
-Authorization: Bearer {{token}}
 
 ###
 GET {{baseurl}}/system/menu/list
@@ -220,11 +215,6 @@ Authorization: Bearer {{token}}
 
 ### delete user
 DELETE {{baseurl}}/users/6
-{{jsonHeaders}}
-Authorization: Bearer {{token}}
-
-### get all roles
-GET {{baseurl}}/roles
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 

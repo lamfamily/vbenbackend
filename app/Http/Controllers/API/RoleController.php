@@ -23,6 +23,10 @@ class RoleController extends Controller
      */
     public function index()
     {
+        // if (!auth()->user()->hasPermissionTo('test1')) {
+        //     return api_res(APICodeEnum::EXCEPTION, __('没有权限'));
+        // }
+
         $roles = Role::with('permissions')->get();
         return api_res(APICodeEnum::SUCCESS, __('获取角色列表成功'), [
             'items' => RoleResource::collection($roles)
