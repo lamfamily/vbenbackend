@@ -184,26 +184,26 @@ Authorization: Bearer {{token}}
 
 
 ### create user
-POST {{baseurl}}/users
+POST {{baseurl}}/system/user
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
-{
-    "name": "New User",
-    "email": "new@example.com",
-    "password": "password",
-    "roles": ["user"]
-}
+{"email":"lam3@gmai.com","status":1,"username":"lam3","password":"","realName":"asdf","role":4}
+
+# {
+#     "name": "New User",
+#     "email": "new@example.com",
+#     "password": "password",
+#     "roles": ["user"]
+# }
 
 
 ### update user
-PUT {{baseurl}}/system/user/5
+PUT {{baseurl}}/system/user/7
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
-{
-    "status": 0
-}
+{"email":"ddddddd@gmail.com","status":1,"username":"lam2","realName":"ddddddddd","role":2}
 
 ### delete user
 DELETE {{baseurl}}/users/6

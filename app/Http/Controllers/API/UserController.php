@@ -128,7 +128,23 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if ($user->username == 'super') {
+            return api_res(APICodeEnum::EXCEPTION, __('不能修改超级管理员'));
+        }
+
         $all_data = $request->all();
+
+        if (isset($all_data['realName'])) {
+            $all_data['name'] = $all_data['realName'];
+        }
+
+        if (isset($all_data['username']) && !empty($all_data['username'])) {
+            // 检查用户名是否存在
+            $existingUser = User::where('username', $all_data['username'])->where('id', '!=', $user->id)->first();
+            if ($existingUser) {
+                return api_res(APICodeEnum::EXCEPTION, __('用户名已存在'));
+            }
+        }
 
         $validator = Validator::make($all_data, [
             // 'name' => 'required|string|max:255',
@@ -149,6 +165,7 @@ class UserController extends Controller
             unset($all_data['password']);
         }
 
+        $user->update($all_data);
 
         if ($request->has('roles')) {
             $user->syncRoles($request->roles);
