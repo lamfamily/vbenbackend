@@ -40,16 +40,14 @@ class MenuController extends Controller
         $user = auth()->user();
         $allMenus = Menu::with('allChildren')
             ->whereNull('parent_id')
-            ->where('active', true)
+            ->where('status', true)
             ->orderBy('order')
             ->get();
 
         // 递归过滤菜单
         $filteredMenus = $this->filterMenusForUser($allMenus, $user);
 
-        return api_res(APICodeEnum::SUCCESS, __('获取菜单成功'), [
-            'menus' => MenuResource::collection($filteredMenus)
-        ]);
+        return api_res(APICodeEnum::SUCCESS, __('获取菜单成功'), MenuResource::collection($filteredMenus));
     }
 
     /**
@@ -64,7 +62,7 @@ class MenuController extends Controller
             // 如果有子菜单，递归过滤
             if ($menu->children->count() > 0) {
                 $filteredChildren = $this->filterMenusForUser($menu->children, $user);
-                $menu->setRelation('children', $filteredChildren);
+                $menu->setRelation('allChildren', $filteredChildren);
 
                 // 如果没有权限但有可访问的子菜单，也应该显示
                 $hasPermission = $hasPermission || $filteredChildren->count() > 0;
@@ -120,7 +118,6 @@ class MenuController extends Controller
         $all_data['slug'] = Str::slug($all_data['name']);
         $all_data['url'] = $all_data['path'] ?? '';
         $all_data['parent_id'] = $all_data['pid'] ?? null;
-        $all_data['active'] = $all_data['status'] ?? 1;
         $all_data['permission'] = $all_data['authCode'] ?? '';
 
         DB::beginTransaction();
@@ -188,9 +185,7 @@ class MenuController extends Controller
         if (isset($all_data['pid'])) {
             $all_data['parent_id'] = $all_data['pid'];
         }
-        if (isset($all_data['status'])) {
-            $all_data['active'] = $all_data['status'];
-        }
+
         if (isset($all_data['authCode'])) {
             $all_data['permission'] = $all_data['authCode'];
         }

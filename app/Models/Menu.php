@@ -18,7 +18,6 @@ class Menu extends Model
         'parent_id',
         'permission',
         'order',
-        'active',
         'type',
         'component',
         'route_name',
@@ -44,7 +43,7 @@ class Menu extends Model
     public function children()
     {
         return $this->hasMany(Menu::class, 'parent_id')
-            ->where('active', true)
+            ->where('status', true)
             ->orderBy('order');
     }
 

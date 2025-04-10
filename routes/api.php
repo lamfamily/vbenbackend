@@ -55,23 +55,33 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user/info', [AuthController::class, 'me'])->middleware('auth:api');
 
     // 用户菜单
-    Route::get('user-menu', [MenuController::class, 'userMenu']);
+    // Route::get('user-menu', [MenuController::class, 'userMenu']);
 
     // 菜单管理
-    Route::apiResource('menus', MenuController::class);
+    // Route::apiResource('menus', MenuController::class);
 
     // 用户管理
-    Route::apiResource('users', UserController::class);
+    // Route::apiResource('users', UserController::class);
 
     // 角色管理
-    Route::apiResource('roles', RoleController::class);
+    // Route::apiResource('roles', RoleController::class);
 
+    // 权限管理
+    // Route::apiResource('permissions', PermissionController::class);
+
+    Route::get('menu/all', [MenuController::class, 'userMenu']);
 
     Route::group([
         'prefix' => 'system',
     ], function() {
+        // role api
         Route::get('role/list', [RoleController::class, 'index']);
+        Route::post('role', [RoleController::class, 'store']);
+        Route::delete('role/{id}', [RoleController::class, 'destroy']);
+        Route::put('role/{role}', [RoleController::class, 'update']);
 
+
+        // menu api
         Route::get('menu/list', [MenuController::class, 'index']);
         Route::get('menu/name-exists', [MenuController::class, 'checkNameExists']);
         Route::get('menu/path-exists', [MenuController::class, 'checkPathExists']);
@@ -81,13 +91,19 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::post('menu', [MenuController::class, 'store']);
         Route::put('menu/{menu}', [MenuController::class, 'update']);
 
+        // dept api
         Route::get('dept/list', [DeptController::class, 'index']);
         Route::post('dept', [DeptController::class, 'store']);
         Route::get('dept/{dept}', [DeptController::class, 'show']);
         Route::put('dept/{dept}', [DeptController::class, 'update']);
         Route::delete('dept/{id}', [DeptController::class, 'destroy']);
+
+        // user api
+        Route::get('user/list', [UserController::class, 'index']);
+        Route::put('user/{user}', [UserController::class, 'update']);
+        Route::delete('user/{id}', [UserController::class, 'destroy']);
+        Route::post('user', [UserController::class, 'store']);
     });
 
-    // 权限管理
-    Route::apiResource('permissions', PermissionController::class);
+
 });

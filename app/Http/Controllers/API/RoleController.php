@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,9 +28,43 @@ class RoleController extends Controller
         //     return api_res(APICodeEnum::EXCEPTION, __('没有权限'));
         // }
 
-        $roles = Role::with('permissions')->get();
+        // $roles = Role::with('permissions')->get();
+        // return api_res(APICodeEnum::SUCCESS, __('获取角色列表成功'), [
+        //     'items' => RoleResource::collection($roles)
+        // ]);
+
+        $page = request('page', 1);
+        $pageSize = request('pageSize', 15);
+        $name = request('name', '');
+        $status = request('status', '');
+        $start_time = request('startTime', '');
+        $end_time = request('endTime', '');
+
+        $query = Role::with('permissions');
+
+        if ($name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        }
+
+        if ($status != '') {
+            $query->where('status', $status);
+        }
+
+        if ($start_time) {
+            $query->where('created_at', '>=', $start_time);
+        }
+
+        if ($end_time) {
+            $query->where('created_at', '<=', $end_time . ' 23:59:59');
+        }
+
+        $roles = $query->paginate($pageSize, ['*'], 'page', $page);
+
         return api_res(APICodeEnum::SUCCESS, __('获取角色列表成功'), [
-            'items' => RoleResource::collection($roles)
+            'items' => RoleResource::collection($roles),
+            'total' => $roles->total(),
+            'page' => $page,
+            'pageSize' => $pageSize,
         ]);
     }
 
@@ -49,12 +84,16 @@ class RoleController extends Controller
             ]);
         }
 
+        DB::beginTransaction();
+
         $role = Role::create(['name' => $request->name]);
 
         if ($request->has('permissions')) {
             $permissions = Permission::whereIn('name', $request->permissions)->get();
             $role->syncPermissions($permissions);
         }
+
+        DB::commit();
 
         return api_res(APICodeEnum::SUCCESS, __('角色创建成功'), [
             'role' => new RoleResource($role->load('permissions'))
@@ -78,8 +117,8 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
-            'permissions' => 'array',
+            // 'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+            // 'permissions' => 'array',
         ]);
 
         if ($validator->fails()) {
@@ -88,7 +127,7 @@ class RoleController extends Controller
             ]);
         }
 
-        $role->update(['name' => $request->name]);
+        $role->update($request->all());
 
         if ($request->has('permissions')) {
             $permissions = Permission::whereIn('name', $request->permissions)->get();
@@ -103,11 +142,21 @@ class RoleController extends Controller
     /**
      * 删除指定角色
      */
-    public function destroy(Role $role)
+    public function destroy(Request $request, int $id)
     {
+        $role = Role::find($id);
+
+        if (!$role) {
+            return api_res(APICodeEnum::EXCEPTION, __('角色不存在'));
+        }
+
+        // 检查角色是否有用户
+        if ($role->users()->count() > 0) {
+            return api_res(APICodeEnum::EXCEPTION, __('角色下有用户，不能删除'));
+        }
+
         // 防止删除超级管理员角色
         if ($role->name === 'super-admin') {
-            // return response()->json(['error' => '不能删除超级管理员角色'], 403);
             return api_res(APICodeEnum::EXCEPTION, __('不能删除超级管理员角色'));
         }
 

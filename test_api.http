@@ -12,15 +12,15 @@ POST {{baseurl}}/auth/login
 {{jsonHeaders}}
 Accept-Language: zh-TW
 
-# {
-#     "username": "super",
-#     "password": "password"
-# }
-
 {
-    "username": "admin",
+    "username": "super",
     "password": "password"
 }
+
+# {
+#     "username": "admin",
+#     "password": "password"
+# }
 
 # {
 #     "username": "lam2",
@@ -67,7 +67,7 @@ GET {{baseurl}}/system/menu/list
 Authorization: Bearer {{token}}
 
 ###
-GET {{baseurl}}/system/user-menu
+GET {{baseurl}}/menu/all
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
@@ -170,14 +170,9 @@ GET {{baseurl}}/system/menu/path-exists?path=%2Ftestmenu
 Authorization: Bearer {{token}}
 
 
-### get user own menus
-GET {{baseurl}}/user-menu
-{{jsonHeaders}}
-Authorization: Bearer {{token}}
-
 
 ### get user list
-GET {{baseurl}}/users
+GET {{baseurl}}/system/user/list?page=1&pageSize=2
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
@@ -202,15 +197,12 @@ Authorization: Bearer {{token}}
 
 
 ### update user
-PUT {{baseurl}}/users/6
+PUT {{baseurl}}/system/user/5
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
 {
-    "name": "New User2",
-    "email": "new@example.com",
-    "password": "password",
-    "roles": ["user"]
+    "status": 0
 }
 
 ### delete user
@@ -229,7 +221,7 @@ GET {{baseurl}}/roles/5
 Authorization: Bearer {{token}}
 
 ### create role
-POST {{baseurl}}/roles
+POST {{baseurl}}/system/role
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
@@ -249,7 +241,7 @@ Authorization: Bearer {{token}}
 }
 
 ### delete role
-DELETE {{baseurl}}/roles/7
+DELETE {{baseurl}}/system/role/5
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 

@@ -41,7 +41,7 @@ class MenuResource extends JsonResource
             'authCode' => $this->permission, // 权限标识
             'meta' => $meta,
             // 'permission' => $this->permission,
-            // 'order' => $this->order,
+            'order' => $this->order,
             // 'active' => $this->active,
             'children' => MenuResource::collection($this->whenLoaded('allChildren')),
             // 'created_at' => $this->created_at,

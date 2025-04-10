@@ -23,9 +23,48 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->paginate(15);
+        // $users = User::with('roles')->paginate(15);
+        // return api_res(APICodeEnum::SUCCESS, __('获取用户列表成功'), [
+        //     'items' => UserResource::collection($users)
+        // ]);
+
+        $page = request('page', 1);
+        $pageSize = request('pageSize', 15);
+        $name = request('name', '');
+        $email = request('email', '');
+        $status = request('status', '');
+        $start_time = request('startTime', '');
+        $end_time = request('endTime', '');
+
+        $query = User::with('roles');
+
+        if ($name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        }
+
+        if ($email) {
+            $query->where('email', 'like', '%' . $email . '%');
+        }
+
+        if ($status != '') {
+            $query->where('status', $status);
+        }
+
+        if ($start_time) {
+            $query->where('created_at', '>=', $start_time);
+        }
+
+        if ($end_time) {
+            $query->where('created_at', '<=', $end_time . ' 23:59:59');
+        }
+
+        $users = $query->paginate($pageSize, ['*'], 'page', $page);
+
         return api_res(APICodeEnum::SUCCESS, __('获取用户列表成功'), [
-            'users' => UserResource::collection($users)
+            'items' => UserResource::collection($users),
+            'total' => $users->total(),
+            'page' => $page,
+            'pageSize' => $pageSize,
         ]);
     }
 
@@ -34,11 +73,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $all_data = $request->all();
+
+        if (isset($all_data['realName'])) {
+            $all_data['name'] = $all_data['realName'];
+        }
+
+        $validator = Validator::make($all_data, [
+            'username' => 'required|string|max:255|unique:users',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'roles' => 'array',
+            // 'roles' => 'array',
+            'role' => 'required|integer',
+            'status' => 'required|in:0,1',
         ]);
 
         if ($validator->fails()) {
@@ -47,14 +95,16 @@ class UserController extends Controller
             ]);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $all_data['password'] = Hash::make($all_data['password']);
 
-        if ($request->has('roles')) {
-            $user->syncRoles($request->roles);
+        $user = User::create($all_data);
+
+        // if ($request->has('roles')) {
+        //     $user->syncRoles($request->roles);
+        // }
+
+        if ($request->has('role')) {
+            $user->syncRoles([$request->role]);
         }
 
         return api_res(APICodeEnum::SUCCESS, __('用户创建成功'), [
@@ -78,11 +128,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:6',
-            'roles' => 'array',
+        $all_data = $request->all();
+
+        $validator = Validator::make($all_data, [
+            // 'name' => 'required|string|max:255',
+            // 'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            // 'password' => 'nullable|string|min:6',
+            // 'roles' => 'array',
         ]);
 
         if ($validator->fails()) {
@@ -91,16 +143,12 @@ class UserController extends Controller
             ]);
         }
 
-        $userData = [
-            'name' => $request->name,
-            'email' => $request->email,
-        ];
-
-        if ($request->filled('password')) {
-            $userData['password'] = Hash::make($request->password);
+        if (isset($all_data['password']) && !empty($all_data['password'])) {
+            $all_data['password'] = Hash::make($all_data['password']);
+        } else {
+            unset($all_data['password']);
         }
 
-        $user->update($userData);
 
         if ($request->has('roles')) {
             $user->syncRoles($request->roles);
@@ -114,8 +162,14 @@ class UserController extends Controller
     /**
      * 删除指定用户
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, int $id)
     {
+        $user = User::find($id);
+
+        if (!$user) {
+            return api_res(APICodeEnum::EXCEPTION, __('用户不存在'));
+        }
+
         // 防止删除自己
         if ($user->id === auth()->id()) {
             return api_res(APICodeEnum::EXCEPTION, __('不能删除当前登录的用户'));

@@ -49,5 +49,8 @@
     "部门名称已存在": "Department name already exists",
     "上级部门不存在": "Parent department does not exist",
     "请先删除子部门": "Please delete sub-departments first",
-    "部门删除成功": "Department deleted successfully"
+    "部门删除成功": "Department deleted successfully",
+    "角色不存在": "Role does not exist",
+    "角色下有用户，不能删除": "There are users under the role, cannot delete",
+    "用户不存在": "User does not exist"
 }
