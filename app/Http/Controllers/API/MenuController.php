@@ -11,6 +11,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MenuResource;
+use App\Services\TestService;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +20,7 @@ class MenuController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:manage menus')->except(['index', 'show', 'userMenu']);
+        $this->middleware('permission:System:Menu:List')->except(['index', 'show', 'userMenu']);
     }
 
     /**

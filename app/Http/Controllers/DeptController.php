@@ -13,7 +13,7 @@ class DeptController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:manage depts');
+        $this->middleware('permission:System:Dept:List');
     }
 
     public function index()

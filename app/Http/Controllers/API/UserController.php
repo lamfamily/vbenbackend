@@ -15,7 +15,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:manage users');
+        $this->middleware('permission:System:User:List');
     }
 
     /**

@@ -225,20 +225,26 @@ POST {{baseurl}}/system/role
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
-{
-    "name": "new-role",
-    "permissions": ["view articles", "create articles"]
-}
+{"status":1,"name":"testrole1","remark":"aaa","permissions":[39,38]}
+
+# {
+#     "name": "new-role",
+#     "permissions": ["view articles", "create articles"]
+# }
 
 ### update role
-PUT {{baseurl}}/roles/6
+PUT {{baseurl}}/system/role/2
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
-{
-    "name": "new-role2",
-    "permissions": ["view articles", "create articles"]
-}
+{"status":1,"name":"admin","remark":"bbbb","permissions":[39,38]}
+
+# {"status":1,"name":"author","remark":"","permissions":[]}
+
+# {
+#     "name": "new-role2",
+#     "permissions": ["view articles", "create articles"]
+# }
 
 ### delete role
 DELETE {{baseurl}}/system/role/5

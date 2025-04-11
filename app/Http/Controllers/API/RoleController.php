@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RoleResource;
+use App\Models\Menu;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +17,7 @@ class RoleController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        $this->middleware('permission:manage roles');
+        $this->middleware('permission:System:Role:List');
     }
 
     /**
@@ -73,7 +74,9 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $all_data = $request->all();
+
+        $validator = Validator::make($all_data, [
             'name' => 'required|string|max:255|unique:roles,name',
             'permissions' => 'array',
         ]);
@@ -86,10 +89,15 @@ class RoleController extends Controller
 
         DB::beginTransaction();
 
-        $role = Role::create(['name' => $request->name]);
+    $role = Role::create($all_data);
 
         if ($request->has('permissions')) {
-            $permissions = Permission::whereIn('name', $request->permissions)->get();
+            // $permissions = Permission::whereIn('name', $request->permissions)->get();
+
+            // $request->permissions 是menu表的id
+            $permission_code_arr = Menu::whereIn('id', $request->permissions)->pluck('permission')->toArray();
+            $permissions = Permission::whereIn('name', $permission_code_arr)->get();
+
             $role->syncPermissions($permissions);
         }
 
@@ -116,7 +124,9 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $validator = Validator::make($request->all(), [
+        $all_data = $request->all();
+
+        $validator = Validator::make($all_data, [
             // 'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
             // 'permissions' => 'array',
         ]);
@@ -127,10 +137,16 @@ class RoleController extends Controller
             ]);
         }
 
-        $role->update($request->all());
+        $role->update($all_data);
 
         if ($request->has('permissions')) {
-            $permissions = Permission::whereIn('name', $request->permissions)->get();
+            // $permissions = Permission::whereIn('name', $request->permissions)->get();
+
+            // $request->permissions 是menu表的id
+            $permission_code_arr = Menu::whereIn('id', $request->permissions)->pluck('permission')->toArray();
+
+            $permissions = Permission::whereIn('name', $permission_code_arr)->get();
+
             $role->syncPermissions($permissions);
         }
 
