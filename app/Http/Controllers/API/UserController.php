@@ -35,6 +35,7 @@ class UserController extends Controller
         $status = request('status', '');
         $start_time = request('startTime', '');
         $end_time = request('endTime', '');
+        $role_name = request('role_name', '');
 
         $query = User::with('roles');
 
@@ -56,6 +57,12 @@ class UserController extends Controller
 
         if ($end_time) {
             $query->where('created_at', '<=', $end_time . ' 23:59:59');
+        }
+
+        if ($role_name) {
+            $query->whereHas('roles', function ($q) use ($role_name) {
+                $q->where('name', $role_name);
+            });
         }
 
         $users = $query->paginate($pageSize, ['*'], 'page', $page);
