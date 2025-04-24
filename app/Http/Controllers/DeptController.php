@@ -43,7 +43,15 @@ class DeptController extends Controller
         }
 
         // 校验name 是否存在
-        $exists = Dept::where('name', $request->name)->exists();
+        // $exists = Dept::where('name', $request->name)->exists();
+        // 如果 pid 存在，要带上
+        $exists = Dept::where('name', $request->name)
+            ->where(function ($query) use ($request) {
+                if ($request->pid) {
+                    $query->where('parent_id', $request->pid);
+                }
+            })
+            ->exists();
         if ($exists) {
             return api_res(APICodeEnum::EXCEPTION, __('部门名称已存在'));
         }

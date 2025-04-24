@@ -10,6 +10,11 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * @method Collection getAllPermissions()
+ * @see Spatie\Permission\Traits\HasPermissions
+ */
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;

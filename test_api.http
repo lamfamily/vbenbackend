@@ -12,15 +12,20 @@ POST {{baseurl}}/auth/login
 {{jsonHeaders}}
 Accept-Language: zh-TW
 
-{
-    "username": "super",
-    "password": "password"
-}
+# {
+#     "username": "super",
+#     "password": "password"
+# }
 
 # {
 #     "username": "admin",
 #     "password": "password"
 # }
+
+{
+    "username": "user",
+    "password": "password"
+}
 
 # {
 #     "username": "lam2",
@@ -321,5 +326,11 @@ Authorization: Bearer {{token}}
 
 ###
 DELETE {{baseurl}}/system/dept/10
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+
+###
+GET {{baseurl}}/auth/codes
 {{jsonHeaders}}
 Authorization: Bearer {{token}}

@@ -154,8 +154,11 @@ class AuthController extends Controller
 
     public function codes()
     {
-        $ret_data = [];
+        /** @var User $user */
+        $user = $this->auth->user();
 
-        return api_res(APICodeEnum::SUCCESS, __('获取权限码成功'), $ret_data);
+        $auth_code_arr = $user->getAllPermissions()->pluck('name')->toArray();
+
+        return api_res(APICodeEnum::SUCCESS, __('获取权限码成功'), $auth_code_arr);
     }
 }

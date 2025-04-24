@@ -39,9 +39,11 @@ class MenuController extends Controller
     public function userMenu()
     {
         $user = auth()->user();
+
         $allMenus = Menu::with('allChildren')
             ->whereNull('parent_id')
             ->where('status', true)
+            ->whereNotIn('type', [MenuTypeEnum::BUTTON])
             ->orderBy('order')
             ->get();
 
@@ -60,9 +62,11 @@ class MenuController extends Controller
             // 检查当前菜单项是否有权限
             $hasPermission = $menu->authorizeFor($user);
 
+            $children = $menu->children->whereNotIn('type', [MenuTypeEnum::BUTTON]);
+
             // 如果有子菜单，递归过滤
-            if ($menu->children->count() > 0) {
-                $filteredChildren = $this->filterMenusForUser($menu->children, $user);
+            if ($children->count() > 0) {
+                $filteredChildren = $this->filterMenusForUser($children, $user);
                 $menu->setRelation('allChildren', $filteredChildren);
 
                 // 如果没有权限但有可访问的子菜单，也应该显示
