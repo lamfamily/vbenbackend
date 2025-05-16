@@ -27,6 +27,9 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+        // 不允许注册
+        return api_res(APICodeEnum::EXCEPTION, __('注册功能已关闭'));
+
         $validator = Validator::make($request->all(), [
             // 'name' => 'required|string|max:255',
             'name' => [
