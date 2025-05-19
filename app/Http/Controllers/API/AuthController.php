@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Enums\APICodeEnum;
 use Tymon\JWTAuth\JWTGuard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Validator;
@@ -25,18 +26,46 @@ class AuthController extends Controller
     /**
      * 用户注册
      */
+    // public function register(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         // 'name' => 'required|string|max:255',
+    //         'name' => [
+    //             'required',
+    //             'string',
+    //             'min:6',
+    //             'max:255',
+    //             'regex:/^[\p{Han}a-zA-Z0-9_]+$/u', // 允许汉字、字母、数字和下划线
+    //         ],
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => 'required|string|min:6|confirmed',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return api_res(APICodeEnum::EXCEPTION, __('参数错误'), [
+    //             'errors' => $validator->errors()
+    //         ]);
+    //     }
+
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => bcrypt($request->password),
+    //     ]);
+
+    //     // 默认分配用户角色
+    //     $user->assignRole('user');
+
+    //     return api_res(APICodeEnum::SUCCESS, __('用户注册成功'), [
+    //         'user' => new UserResource($user)
+    //     ]);
+    // }
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'name' => 'required|string|max:255',
-            'name' => [
-                'required',
-                'string',
-                'min:6',
-                'max:255',
-                'regex:/^[\p{Han}a-zA-Z0-9_]+$/u', // 允许汉字、字母、数字和下划线
-            ],
             'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -46,17 +75,24 @@ class AuthController extends Controller
             ]);
         }
 
+        // 开启事务
+        DB::beginTransaction();
+
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->username,
             'email' => $request->email,
+            'username' => $request->username,
             'password' => bcrypt($request->password),
         ]);
 
         // 默认分配用户角色
         $user->assignRole('user');
 
+        // 提交事务
+        DB::commit();
+
         return api_res(APICodeEnum::SUCCESS, __('用户注册成功'), [
-            'user' => new UserResource($user)
+            'user' => $user,
         ]);
     }
 
