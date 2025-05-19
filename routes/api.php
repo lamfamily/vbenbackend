@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DeptController;
+use App\Http\Controllers\API\DeptController;
 use App\Http\Controllers\JwtAuthController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\MenuController;

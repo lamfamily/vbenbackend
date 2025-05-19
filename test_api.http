@@ -352,5 +352,5 @@ Authorization: Bearer {{token}}
 Accept-Language: en
 
 {
-    "ids1": [99,100]
+    "ids": [99,100]
 }
