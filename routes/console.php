@@ -42,3 +42,14 @@ Artisan::command('set-permission-for-admin', function () {
     echo "</pre>";
     exit();
 });
+
+Artisan::command('test-j5-trans', function() {
+    echo "<pre>";
+    var_dump(app()->getLocale(),
+    j5_trans('登录成功'),
+    j5_trans('The :attribute field is required.', ['attribute' => 'username']),
+    j5_trans_choice('There is one apple|There are many apples', 1)
+);
+    echo "</pre>";
+    exit();
+});

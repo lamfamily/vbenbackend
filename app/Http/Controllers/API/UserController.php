@@ -214,7 +214,7 @@ class UserController extends Controller
         $ids = $all_data['ids'] ?? [];
 
         if (empty($ids)) {
-            return api_res(APICodeEnum::EXCEPTION, __('参数错误'));
+            return api_res(APICodeEnum::EXCEPTION, j5_trans('参数错误'));
         }
 
         $user_list = User::whereIn('id', $ids)->get();

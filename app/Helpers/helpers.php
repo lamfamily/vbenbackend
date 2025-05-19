@@ -33,3 +33,54 @@ if (!function_exists('api_res')) {
         ], $status);
     }
 }
+
+if (! function_exists('j5_trans')) {
+    /**
+     * 从JSON5文件中翻译给定的消息
+     *
+     * @param  string  $key
+     * @param  array  $replace
+     * @param  string|null  $locale
+     * @return string
+     */
+    function j5_trans($key, array $replace = [], $locale = null)
+    {
+        return app('json5.translator')->translate($key, $replace, $locale);
+    }
+}
+
+if (! function_exists('j5_trans_choice')) {
+    /**
+     * 从JSON5文件中翻译给定的多元消息
+     *
+     * @param  string  $key
+     * @param  int|array  $number
+     * @param  array  $replace
+     * @param  string|null  $locale
+     * @return string
+     */
+    function j5_trans_choice($key, $number, array $replace = [], $locale = null)
+    {
+        $line = app('json5.translator')->translate($key, $replace, $locale);
+
+        $segments = preg_split('/\|/', $line);
+
+        if (is_array($number)) {
+            $number = count($number);
+        }
+
+        $replace['count'] = $number;
+
+        if (count($segments) === 2) {
+            // 简单多元: 单数|复数
+            return app('json5.translator')->translate(
+                $segments[$number > 1 ? 1 : 0],
+                $replace,
+                $locale
+            );
+        }
+
+        // 或者我们可以简单地返回原始翻译
+        return $line;
+    }
+}
