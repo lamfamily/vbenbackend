@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Permission;
 
 class AuthController extends Controller
 {
@@ -192,6 +193,12 @@ class AuthController extends Controller
     {
         /** @var User $user */
         $user = $this->auth->user();
+
+        if ($user->username == 'super') {
+            $all_permissions = Permission::all()->pluck('name')->toArray();
+            return api_res(APICodeEnum::SUCCESS, __('获取权限码成功'), $all_permissions);
+        }
+
 
         $auth_code_arr = $user->getAllPermissions()->pluck('name')->toArray();
 

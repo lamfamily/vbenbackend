@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class MenuTypeEnum
+use App\Contracts\EnumContract;
+
+class MenuTypeEnum implements EnumContract
 {
     // 'catalog','menu','button','embedded','link'
     const CATALOG = 'catalog';
@@ -22,7 +24,7 @@ class MenuTypeEnum
         ];
     }
 
-    public static function getTypes()
+    public static function getValues()
     {
         return [
             self::CATALOG => __('目录'),

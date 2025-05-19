@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Models\User;
 use App\Enums\APICodeEnum;
+use App\Enums\UserStatusEnum;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -202,5 +204,46 @@ class UserController extends Controller
         $user->delete();
 
         return api_res(APICodeEnum::SUCCESS, __('用户删除成功'));
+    }
+
+
+    public function batchDelete(Request $request)
+    {
+
+        $all_data = $request->all();
+        $ids = $all_data['ids'] ?? [];
+
+        if (empty($ids)) {
+            return api_res(APICodeEnum::EXCEPTION, __('参数错误'));
+        }
+
+        $user_list = User::whereIn('id', $ids)->get();
+
+        $exists_ids = array_column($user_list->toArray(), 'id');
+
+        $not_exists_ids = array_diff($ids, $exists_ids);
+        if (!empty($not_exists_ids)) {
+            return api_res(APICodeEnum::EXCEPTION, __('用户不存在'), [
+                'ids' => $not_exists_ids
+            ]);
+        }
+
+        // 防止删除自己
+        if (in_array(auth()->id(), $ids)) {
+            return api_res(APICodeEnum::EXCEPTION, __('不能删除当前登录的用户'));
+        }
+
+        // 删除操作,假删除
+        // $save_data = [
+        //     'status' => UserStatusEnum::DISABLED
+        // ];
+        // User::whereIn('id', $ids)->update($save_data);
+
+        // 物理删除
+        User::destroy($ids);
+
+        return api_res(APICodeEnum::SUCCESS, __('用户删除成功'), [
+            'ids' => $ids
+        ]);
     }
 }

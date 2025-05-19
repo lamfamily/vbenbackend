@@ -93,7 +93,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
         // dept api
         Route::get('dept/list', [DeptController::class, 'index']);
-        Route::post('dept', [DeptController::class, 'store']);
+        // 精准控制权限
+        Route::post('dept', [DeptController::class, 'store'])->middleware('permission:System:Dept:Create');
         Route::get('dept/{dept}', [DeptController::class, 'show']);
         Route::put('dept/{dept}', [DeptController::class, 'update']);
         Route::delete('dept/{id}', [DeptController::class, 'destroy']);
@@ -103,6 +104,8 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::put('user/{user}', [UserController::class, 'update']);
         Route::delete('user/{id}', [UserController::class, 'destroy']);
         Route::post('user', [UserController::class, 'store']);
+        // 精准控制权限
+        Route::post('user/batch-delete', [UserController::class, 'batchDelete'])->middleware('permission:System:User:BatchDelete');
     });
 
 

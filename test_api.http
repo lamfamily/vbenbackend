@@ -28,8 +28,8 @@ Accept-Language: zh-TW
 # }
 
 # {
-#     "username": "lam2",
-#     "password": "123456"
+#     "username": "lam1",
+#     "password": "12345678"
 # }
 
 
@@ -309,6 +309,7 @@ Authorization: Bearer {{token}}
 POST {{baseurl}}/system/dept
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
+Accept-Language: zh-TW
 
 {
     "parent_id": 3,
@@ -342,3 +343,14 @@ Authorization: Bearer {{token}}
 GET {{baseurl}}/auth/codes
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
+
+
+###
+POST {{baseurl}}/system/user/batch-delete
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+{
+    "ids": [99,100]
+}

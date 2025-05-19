@@ -40,7 +40,13 @@ class Handler extends ExceptionHandler
                     ], 401);
                 }
 
-                return api_res(APICodeEnum::EXCEPTION, $e->getMessage());
+                // 统一做多语言处理
+                $msg = $e->getMessage();
+                if (__($msg) !== $msg) {
+                    $msg = __($msg);
+                }
+
+                return api_res(APICodeEnum::EXCEPTION, $msg);
             }
         });
     }
