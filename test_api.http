@@ -349,8 +349,8 @@ Authorization: Bearer {{token}}
 POST {{baseurl}}/system/user/batch-delete
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
-Accept-Language: zh-TW
+Accept-Language: en
 
 {
-    "ids": [99,100]
+    "ids1": [99,100]
 }
