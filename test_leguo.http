@@ -1,0 +1,48 @@
+@baseurl = https://vbenbackend.test.com/api
+@jsonHeaders = Content-Type: application/json
+Accept: application/json
+
+@token = {{login.response.body.data.accessToken}}
+
+### test login
+# @name login
+POST {{baseurl}}/auth/login
+{{jsonHeaders}}
+Accept-Language: zh-TW
+
+{
+    "username": "super",
+    "password": "password"
+}
+
+# {
+#     "username": "admin",
+#     "password": "password"
+# }
+
+# {
+#     "username": "user",
+#     "password": "password"
+# }
+
+# {
+#     "username": "lam1",
+#     "password": "12345678"
+# }
+
+
+###
+GET {{baseurl}}/website
+{{jsonHeaders}}
+Accept-Language: zh-TW
+Authorization: Bearer {{token}}
+
+###
+PUT {{baseurl}}/website
+{{jsonHeaders}}
+Accept-Language: en-US
+Authorization: Bearer {{token}}
+
+{
+    "desc": "aaaabbbb"
+}

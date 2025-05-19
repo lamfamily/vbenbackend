@@ -1,0 +1,11 @@
+{
+    "name": "Leguo",
+    "alias": "leguo",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Leguo\\App\\Providers\\LeguoServiceProvider"
+    ],
+    "files": []
+}
