@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Dept;
 use App\Enums\APICodeEnum;
-use App\Http\Resources\DeptResource;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\DeptResource;
 use Illuminate\Support\Facades\Validator;
 
 class DeptController extends Controller
