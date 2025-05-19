@@ -12,24 +12,24 @@ POST {{baseurl}}/auth/login
 {{jsonHeaders}}
 Accept-Language: zh-TW
 
-# {
-#     "username": "super",
-#     "password": "password"
-# }
+{
+    "username": "super",
+    "password": "password"
+}
 
 # {
 #     "username": "admin",
 #     "password": "password"
 # }
 
-{
-    "username": "user",
-    "password": "password"
-}
+# {
+#     "username": "user",
+#     "password": "password"
+# }
 
 # {
-#     "username": "lam2",
-#     "password": "123456"
+#     "username": "lam1",
+#     "password": "12345678"
 # }
 
 
@@ -37,9 +37,16 @@ Accept-Language: zh-TW
 POST {{baseurl}}/auth/register
 {{jsonHeaders}}
 
+# {
+#     "name": "super",
+#     "email": "lam3@gmail.com",
+#     "password": "123456",
+#     "password_confirmation": "123456"
+# }
+
 {
-    "name": "super",
-    "email": "lam3@gmail.com",
+    "email": "lam1@gmail.com",
+    "username": "lam1",
     "password": "123456",
     "password_confirmation": "123456"
 }
@@ -177,7 +184,8 @@ Authorization: Bearer {{token}}
 
 
 ### get user list
-GET {{baseurl}}/system/user/list?page=1&pageSize=2
+# GET {{baseurl}}/system/user/list?page=1&pageSize=2
+GET {{baseurl}}/system/user/list
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
@@ -301,6 +309,7 @@ Authorization: Bearer {{token}}
 POST {{baseurl}}/system/dept
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
+Accept-Language: zh-TW
 
 {
     "parent_id": 3,
@@ -334,3 +343,14 @@ Authorization: Bearer {{token}}
 GET {{baseurl}}/auth/codes
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
+
+
+###
+POST {{baseurl}}/system/user/batch-delete
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+{
+    "ids": [99,100]
+}

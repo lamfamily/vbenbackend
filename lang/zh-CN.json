@@ -1,3 +1,4 @@
 {
-    "登录成功": "登录成功"
+    "登录成功": "登录成功",
+    "User does not have the right permissions." : "用户没有权限"
 }
