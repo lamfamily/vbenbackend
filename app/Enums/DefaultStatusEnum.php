@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-class DefaultStatusEnum
+use App\Contracts\EnumContract;
+
+class DefaultStatusEnum implements EnumContract
 {
     const ENABLED = 1; // 启用
     const DISABLED = 0; // 禁用
