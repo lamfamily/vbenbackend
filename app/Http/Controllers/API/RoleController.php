@@ -66,6 +66,7 @@ class RoleController extends Controller
             'total' => $roles->total(),
             'page' => $page,
             'pageSize' => $pageSize,
+            'lastPage' => $roles->lastPage(),
         ]);
     }
 

@@ -74,6 +74,7 @@ class UserController extends Controller
             'total' => $users->total(),
             'page' => $page,
             'pageSize' => $pageSize,
+            'lastPage' => $users->lastPage(),
         ]);
     }
 

@@ -52,6 +52,11 @@ GET {{baseurl}}/leguo/goods-category?p=1&ps=2
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
+###
+GET {{baseurl}}/leguo/goods-category/1
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
 ### create goods category
 POST {{baseurl}}/leguo/goods-category
 {{jsonHeaders}}
@@ -71,13 +76,13 @@ Authorization: Bearer {{token}}
 Accept-Language: zh-TW
 
 {
-    "name": "肉类",
+    "name": "水果2",
     "desc": "bbbb",
     "status": 1
 }
 
 ### delete goods category
-DELETE {{baseurl}}/leguo/goods-category/14
+DELETE {{baseurl}}/leguo/goods-category/1
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 Accept-Language: zh-TW
