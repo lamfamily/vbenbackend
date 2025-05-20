@@ -324,7 +324,7 @@ GET {{baseurl}}/system/dept/10
 Authorization: Bearer {{token}}
 
 ###
-PUT {{baseurl}}/system/dept/10
+PUT {{baseurl}}/system/dept/1
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 

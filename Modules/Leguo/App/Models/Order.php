@@ -4,14 +4,14 @@ namespace Modules\Leguo\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Leguo\Database\factories\WebsiteFactory;
+use Modules\Leguo\Database\factories\OrderFactory;
 
-class Website extends Model
+class Order extends Model
 {
     use HasFactory;
 
     protected $connection = 'leguo';
-    protected $table = 'website';
+    protected $table = 'order';
 
     /**
      * The attributes that are mass assignable.

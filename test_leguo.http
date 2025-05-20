@@ -31,18 +31,54 @@ Accept-Language: zh-TW
 # }
 
 
-###
-GET {{baseurl}}/website
+### get website data
+GET {{baseurl}}/leguo/website
 {{jsonHeaders}}
 Accept-Language: zh-TW
 Authorization: Bearer {{token}}
 
-###
-PUT {{baseurl}}/website
+### update website data
+PUT {{baseurl}}/leguo/website
 {{jsonHeaders}}
 Accept-Language: en-US
 Authorization: Bearer {{token}}
 
 {
-    "desc": "aaaabbbb"
+    "desc": "測試内容"
 }
+
+### get goods category list
+GET {{baseurl}}/leguo/goods-category?p=1&ps=2
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+### create goods category
+POST {{baseurl}}/leguo/goods-category
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+{
+    "name": "水果5",
+    "desc": "aaaaaaa",
+    "status": 1
+}
+
+### update goods category
+PUT {{baseurl}}/leguo/goods-category/11
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+{
+    "name": "肉类",
+    "desc": "bbbb",
+    "status": 1
+}
+
+### delete goods category
+DELETE {{baseurl}}/leguo/goods-category/14
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+

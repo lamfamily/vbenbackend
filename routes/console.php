@@ -3,6 +3,7 @@
 use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Modules\Leguo\App\Models\GoodsCategory;
 use Spatie\Permission\Models\Permission;
 
 /*
@@ -52,4 +53,10 @@ Artisan::command('test-j5-trans', function() {
 );
     echo "</pre>";
     exit();
+});
+
+Artisan::command('create-goods-category', function() {
+    GoodsCategory::factory()->count(10)->create();
+
+    $this->info("GoodsCategory created!");
 });

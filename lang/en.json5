@@ -54,4 +54,12 @@
     "角色下有用户，不能删除": "There are users under the role, cannot delete",
     用户不存在: "User does not exist",
     更新网站信息成功: "Update website information successfully",
+    获取列表成功: "Get list successfully",
+    数据已存在: "Data already exists",
+    创建成功: "Creation successful",
+    创建失败: "Creation failed",
+    更新成功: "Update successful",
+    更新失败: "Update failed",
+    "已关联商品，无法删除": "Related products, unable to delete",
+    数据不存在: "Data does not exist",
 }

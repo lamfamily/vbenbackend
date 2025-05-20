@@ -11,6 +11,12 @@ use Modules\Leguo\App\Models\Website;
 
 class WebsiteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+        $this->middleware('permission:Leguo:Website:List');
+    }
+
     /**
      * Display a listing of the resource.
      */

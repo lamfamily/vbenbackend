@@ -2,9 +2,10 @@
 
 namespace App\Exceptions;
 
+use Throwable;
 use App\Enums\APICodeEnum;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -38,6 +39,13 @@ class Handler extends ExceptionHandler
                     return api_res(APICodeEnum::EXCEPTION, __('未授权'), [
                         'message' => $e->getMessage()
                     ], 401);
+                }
+
+                // 处理 ModelNotFoundException
+                if ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException || $e instanceof NotFoundHttpException) {
+                    return api_res(APICodeEnum::EXCEPTION, j5_trans('数据不存在'), [
+                        'message' => $e->getMessage()
+                    ]);
                 }
 
                 // 统一做多语言处理
