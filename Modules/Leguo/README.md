@@ -14,5 +14,5 @@
 - php artisan module:make-factory GoodsCategory Leguo
 - php artisan module:make-controller GoodsController Leguo
 - php artisan module:make-migration create_goods_category_goods_table Leguo
-- composer require laravel-lang/lang --dev
-- php artisan lang:publish
+- php artisan module:make-resource GoodsCategoryResource Leguo
+- php artisan module:make-resource GoodsResource Leguo

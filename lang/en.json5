@@ -62,4 +62,8 @@
     更新失败: "Update failed",
     "已关联商品，无法删除": "Related products, unable to delete",
     数据不存在: "Data does not exist",
+    已启用: "Enabled",
+    已禁用: "Disabled",
+    已删除: "Deleted",
+    操作成功: "Operation successful",
 }

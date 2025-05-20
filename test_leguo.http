@@ -52,7 +52,7 @@ GET {{baseurl}}/leguo/goods-category?p=1&ps=2
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 
-###
+### get single goods category
 GET {{baseurl}}/leguo/goods-category/1
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
@@ -87,3 +87,45 @@ DELETE {{baseurl}}/leguo/goods-category/1
 Authorization: Bearer {{token}}
 Accept-Language: zh-TW
 
+### get goods list
+GET {{baseurl}}/leguo/goods?p=1&ps=2
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+### get single goods
+GET {{baseurl}}/leguo/goods/1
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+
+### create goods
+POST {{baseurl}}/leguo/goods
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+{
+    "name": "水果5",
+    "desc": "aaaaaaa",
+    "status": 1,
+    "stock_num": 999,
+    "price": 100.22,
+    "currency": "TWD"
+}
+
+### update goods
+PUT {{baseurl}}/leguo/goods/2
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+{
+    "name": "水果3",
+    "desc": "bbbb",
+    "status": 1
+}
+
+### delete goods
+DELETE {{baseurl}}/leguo/goods/1
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW

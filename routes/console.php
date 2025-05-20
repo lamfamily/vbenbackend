@@ -1,10 +1,11 @@
 <?php
 
 use Spatie\Permission\Models\Role;
+use Modules\Leguo\App\Models\Goods;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-use Modules\Leguo\App\Models\GoodsCategory;
 use Spatie\Permission\Models\Permission;
+use Modules\Leguo\App\Models\GoodsCategory;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,4 +60,21 @@ Artisan::command('create-goods-category', function() {
     GoodsCategory::factory()->count(10)->create();
 
     $this->info("GoodsCategory created!");
+});
+
+Artisan::command('create-goods', function() {
+    Goods::factory()->count(10)->create();
+
+    $this->info("Goods created!");
+});
+
+Artisan::command('test-query-deleted-goods', function() {
+    $goods_list1 = Goods::where('status', -1)->get()->toArray();
+
+    $goods_list2 = Goods::withoutGlobalScope('active')->where('status', -1)->get()->toArray();
+
+    echo "<pre>";
+    var_dump($goods_list1, $goods_list2);
+    echo "</pre>";
+    exit();
 });
