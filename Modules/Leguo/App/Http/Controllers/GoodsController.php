@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Modules\Leguo\App\Models\Goods;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Leguo\App\resources\GoodsResource;
 
 class GoodsController extends Controller
@@ -25,7 +26,7 @@ class GoodsController extends Controller
     {
         $p = $request->input('p', 1);
         $ps = $request->input('ps', 10);
-        $goods_list = Goods::orderBy('id', 'asc')->paginate($ps, ['*'], 'page', $p);
+        $goods_list = Goods::with('images')->orderBy('id', 'asc')->paginate($ps, ['*'], 'page', $p);
 
         return api_res(APICodeEnum::SUCCESS, j5_trans('获取列表成功'), [
             'items' => GoodsResource::collection($goods_list),
@@ -39,6 +40,8 @@ class GoodsController extends Controller
 
     public function show(Request $request, Goods $good): JsonResponse
     {
+        $good->load('images');
+
         return api_res(APICodeEnum::SUCCESS, j5_trans('获取成功'), GoodsResource::make($good));
     }
 
@@ -57,6 +60,8 @@ class GoodsController extends Controller
             // currency 必须3位
             'currency' => 'required|string|size:3',
             'status' => 'nullable|boolean',
+            'image_ids' => 'array',
+            'image_ids.*' => 'integer|exists:leguo.images,id',
         ]);
 
         if ($validator->fails()) {
@@ -65,12 +70,42 @@ class GoodsController extends Controller
             ]);
         }
 
-        // 创建商品
-        $goods = Goods::create($all_data);
-        if ($goods) {
-            return api_res(APICodeEnum::SUCCESS, j5_trans('创建成功'), GoodsResource::make($goods));
-        } else {
-            return api_res(APICodeEnum::EXCEPTION, j5_trans('创建失败'));
+        DB::connection('leguo')->beginTransaction();
+        try {
+
+            // 创建商品
+            // $goods = Goods::create($request->except('image_ids'));
+            $goods = Goods::create(collect($all_data)->except('image_ids')->toArray());
+
+            if ($goods) {
+
+                // 多图片关联
+                if ($request->has('image_ids') && is_array($request->image_ids)) {
+                    $syncData = [];
+                    foreach ($request->image_ids as $k => $imgId) {
+                        $syncData[$imgId] = [
+                            'type' => 'gallery', // 可自定义类型
+                            'sort_order' => $k
+                        ];
+                    }
+                    // $goods->images()：调用商品模型的 多态多对多关联（返回一个 Eloquent 关联对象）
+                    // sync($syncData)：批量同步关联关系到中间表（这里是 imageables）
+                    $goods->images()->sync($syncData);
+                }
+
+                $goods->load('images');
+
+                DB::connection('leguo')->commit();
+
+                return api_res(APICodeEnum::SUCCESS, j5_trans('创建成功'), GoodsResource::make($goods));
+            } else {
+                DB::connection('leguo')->rollBack();
+
+                return api_res(APICodeEnum::EXCEPTION, j5_trans('创建失败'));
+            }
+        } catch (\Exception $e) {
+            DB::connection('leguo')->rollBack();
+            return api_res(APICodeEnum::EXCEPTION, $e->getMessage());
         }
     }
 
@@ -89,6 +124,8 @@ class GoodsController extends Controller
             // currency 必须3位
             'currency' => 'nullable|string|size:3',
             'status' => 'nullable|boolean',
+            'image_ids' => 'array',
+            'image_ids.*' => 'integer|exists:leguo.images,id',
         ]);
 
         if ($validator->fails()) {
@@ -97,12 +134,38 @@ class GoodsController extends Controller
             ]);
         }
 
-        // 更新商品
-        $good->update($all_data);
-        if ($good) {
-            return api_res(APICodeEnum::SUCCESS, j5_trans('更新成功'), GoodsResource::make($good));
-        } else {
-            return api_res(APICodeEnum::SUCCESS, j5_trans('更新失败'));
+        DB::connection('leguo')->beginTransaction();
+        try {
+            // 更新商品
+            $good->update(collect($all_data)->except('image_ids')->toArray());
+
+            if ($good) {
+                // 如果有图片id则同步图片关联
+                if ($request->has('image_ids') && is_array($request->image_ids)) {
+                    $syncData = [];
+                    foreach ($request->image_ids as $k => $imgId) {
+                        $syncData[$imgId] = [
+                            'type' => 'gallery', // 你可以自定义类型
+                            'sort_order' => $k
+                        ];
+                    }
+                    $good->images()->sync($syncData);
+                }
+
+                $good->load('images');
+
+                DB::connection('leguo')->commit();
+
+                return api_res(APICodeEnum::SUCCESS, j5_trans('更新成功'), GoodsResource::make($good));
+            } else {
+                DB::connection('leguo')->rollBack();
+
+                return api_res(APICodeEnum::SUCCESS, j5_trans('更新失败'));
+            }
+        } catch (\Exception $e) {
+            DB::connection('leguo')->rollBack();
+
+            return api_res(APICodeEnum::EXCEPTION, $e->getMessage());
         }
     }
 

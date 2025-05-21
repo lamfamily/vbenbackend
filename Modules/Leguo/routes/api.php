@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Leguo\App\Http\Controllers\GoodsController;
 use Modules\Leguo\App\Http\Controllers\WebsiteController;
 use Modules\Leguo\App\Http\Controllers\GoodsCategoryController;
+use Modules\Leguo\App\Http\Controllers\ImageController;
 
 /*
     |--------------------------------------------------------------------------
@@ -30,6 +31,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'leguo'], function () {
     Route::apiResource('goods', GoodsController::class);
 
     Route::apiResource('goods-category', GoodsCategoryController::class);
+
+    Route::post('images/upload', [ImageController::class, 'upload']);
 });
 
 

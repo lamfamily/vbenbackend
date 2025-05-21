@@ -21,6 +21,7 @@ class GoodsResource extends JsonResource
             'price' => $this->price,
             'currency' => $this->currency,
             'status' => $this->status,
+            'images' => ImageResource::collection($this->whenLoaded('images')),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Leguo\Database\Factories\GoodsFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Goods extends Model
 {
@@ -42,5 +43,14 @@ class Goods extends Model
     public function goodsCategories(): BelongsToMany
     {
         return $this->belongsToMany(GoodsCategory::class, 'goods_category_goods', 'goods_id', 'goods_category_id');
+    }
+
+
+    public function images() : MorphToMany
+    {
+        return $this->morphToMany(
+            Image::class,
+            'imageable' // 多态字段的名字，对应 imageables 这张表
+        )->withPivot(['type', 'sort_order'])->withTimestamps();
     }
 }
