@@ -26,14 +26,14 @@ class GoodsController extends Controller
     {
         $p = $request->input('p', 1);
         $ps = $request->input('ps', 10);
-        $goods_list = Goods::with('images')->orderBy('id', 'asc')->paginate($ps, ['*'], 'page', $p);
+        $list = Goods::with('images')->orderBy('id', 'asc')->paginate($ps, ['*'], 'page', $p);
 
         return api_res(APICodeEnum::SUCCESS, j5_trans('获取列表成功'), [
-            'items' => GoodsResource::collection($goods_list),
-            'total' => $goods_list->total(),
-            'page' => $goods_list->currentPage(),
-            'lastPage' => $goods_list->lastPage(),
-            'pageSize' => $goods_list->perPage(),
+            'items' => GoodsResource::collection($list),
+            'total' => $list->total(),
+            'page' => $list->currentPage(),
+            'lastPage' => $list->lastPage(),
+            'pageSize' => $list->perPage(),
         ]);
     }
 
@@ -93,9 +93,9 @@ class GoodsController extends Controller
                     $goods->images()->sync($syncData);
                 }
 
-                $goods->load('images');
-
                 DB::connection('leguo')->commit();
+
+                $goods->load('images');
 
                 return api_res(APICodeEnum::SUCCESS, j5_trans('创建成功'), GoodsResource::make($goods));
             } else {
@@ -152,9 +152,9 @@ class GoodsController extends Controller
                     $good->images()->sync($syncData);
                 }
 
-                $good->load('images');
-
                 DB::connection('leguo')->commit();
+
+                $good->load('images');
 
                 return api_res(APICodeEnum::SUCCESS, j5_trans('更新成功'), GoodsResource::make($good));
             } else {

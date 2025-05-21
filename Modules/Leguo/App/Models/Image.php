@@ -36,4 +36,9 @@ class Image extends Model
     {
         return $this->morphedByMany(Goods::class, 'imageable');
     }
+
+    public function partner()
+    {
+        return $this->morphToMany(Partner::class, 'imageable');
+    }
 }

@@ -6,6 +6,7 @@ use Modules\Leguo\App\Http\Controllers\GoodsController;
 use Modules\Leguo\App\Http\Controllers\WebsiteController;
 use Modules\Leguo\App\Http\Controllers\GoodsCategoryController;
 use Modules\Leguo\App\Http\Controllers\ImageController;
+use Modules\Leguo\App\Http\Controllers\PartnerController;
 
 /*
     |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'leguo'], function () {
     Route::apiResource('goods', GoodsController::class);
 
     Route::apiResource('goods-category', GoodsCategoryController::class);
+
+    Route::apiResource('partner', PartnerController::class);
 
     Route::post('images/upload', [ImageController::class, 'upload']);
 });

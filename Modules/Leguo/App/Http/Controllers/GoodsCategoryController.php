@@ -21,14 +21,14 @@ class GoodsCategoryController extends Controller
     {
         $p = $request->input('p', 1);
         $ps = $request->input('ps', 10);
-        $goods_category_list = GoodsCategory::orderBy('id', 'asc')->paginate($ps, ['*'], 'page', $p);
+        $list = GoodsCategory::orderBy('id', 'asc')->paginate($ps, ['*'], 'page', $p);
 
         return api_res(APICodeEnum::SUCCESS, j5_trans('获取列表成功'), [
-            'items' => GoodsCategoryResource::collection($goods_category_list),
-            'total' => $goods_category_list->total(),
-            'page' => $goods_category_list->currentPage(),
-            'lastPage' => $goods_category_list->lastPage(),
-            'pageSize' => $goods_category_list->perPage(),
+            'items' => GoodsCategoryResource::collection($list),
+            'total' => $list->total(),
+            'page' => $list->currentPage(),
+            'lastPage' => $list->lastPage(),
+            'pageSize' => $list->perPage(),
         ]);
     }
 
