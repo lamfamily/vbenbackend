@@ -181,3 +181,53 @@ Authorization: Bearer {{token}}
 DELETE {{baseurl}}/leguo/partner/8
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
+
+### get order list
+GET {{baseurl}}/leguo/order
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+### get single order
+GET {{baseurl}}/leguo/order/1
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+### create order
+POST {{baseurl}}/leguo/order
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+{
+    "recipient": {
+        "first_name": "lam",
+        "last_name": "kakyun",
+        "phone": "0912345678",
+        "line_id": "lamkakyun_ln",
+        "email": "lamkakyun@gmail.com",
+        "address": "aaaaaaaa",
+        "id_no": "1233",
+        "remark": "pls add some text to the goods"
+    },
+    "goods_list": [
+        {
+            "goods_id": 20,
+            "goods_quantity": 2,
+            "recipient": {
+                "first_name": "lam",
+                "last_name": "kakyun",
+                "phone": "0912345687",
+                "address": "bbbbbbbbbbbb",
+                "receive_date": "2025-10-20",
+                "receive_time_span": "上午",
+                "remark": "bbbbbbb"
+            }
+        },
+        {
+            "goods_id": 19,
+            "goods_quantity": 3
+        }
+    ]
+}
