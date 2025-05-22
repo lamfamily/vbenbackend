@@ -7,6 +7,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $url
+ * @property string|null $desc
+ * @property int $status
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Leguo\App\Models\Image> $logo
+ * @property-read int|null $logo_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Partner whereUrl($value)
+ * @mixin \Eloquent
+ */
 class Partner extends Model
 {
     use HasFactory;

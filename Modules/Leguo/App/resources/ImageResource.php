@@ -13,6 +13,7 @@ class ImageResource extends JsonResource
     {
         // return parent::toArray($request);
 
+        /** @var \Modules\Leguo\App\Models\Image $this */
         return [
             'id' => $this->id,
             'url' => $this->url,

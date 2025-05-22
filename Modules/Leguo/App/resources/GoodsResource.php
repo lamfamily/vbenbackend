@@ -13,6 +13,7 @@ class GoodsResource extends JsonResource
     {
         // return parent::toArray($request);
 
+        /** @var \Modules\Leguo\App\Models\Goods $this */
         return [
             'id' => $this->id,
             'name' => $this->name,

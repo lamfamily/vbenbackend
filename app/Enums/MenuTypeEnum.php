@@ -27,11 +27,11 @@ class MenuTypeEnum implements EnumContract
     public static function getValues()
     {
         return [
-            self::CATALOG => __('目录'),
-            self::MENU => __('菜单'),
-            self::BUTTON => __('按钮'),
-            self::EMBEDDED => __('内嵌'),
-            self::LINK => __('外链'),
+            self::CATALOG => j5_trans('目录'),
+            self::MENU => j5_trans('菜单'),
+            self::BUTTON => j5_trans('按钮'),
+            self::EMBEDDED => j5_trans('内嵌'),
+            self::LINK => j5_trans('外链'),
         ];
     }
 }

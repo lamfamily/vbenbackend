@@ -20,8 +20,8 @@ class APICodeEnum implements EnumContract
     public static function getValues()
     {
         return [
-            self::SUCCESS => __('成功'),
-            self::EXCEPTION => __('异常'),
+            self::SUCCESS => j5_trans('成功'),
+            self::EXCEPTION => j5_trans('异常'),
         ];
     }
 }

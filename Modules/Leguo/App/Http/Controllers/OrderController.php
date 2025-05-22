@@ -3,13 +3,13 @@
 namespace Modules\Leguo\App\Http\Controllers;
 
 use App\Enums\APICodeEnum;
-use App\Enums\DefaultStatusEnum;
 use Illuminate\Http\Request;
+use App\Enums\DefaultStatusEnum;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Modules\Leguo\App\Models\Order;
 use App\Http\Controllers\Controller;
-use App\Services\OrderService;
+use Modules\Leguo\App\Services\OrderService;
 use Modules\Leguo\App\resources\OrderResource;
 
 class OrderController extends Controller

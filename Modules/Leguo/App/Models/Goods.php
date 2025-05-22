@@ -8,6 +8,37 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $name
+ * @property string|null $desc
+ * @property int $stock_num
+ * @property string $price
+ * @property string $currency
+ * @property int $status
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Leguo\App\Models\GoodsCategory> $goodsCategories
+ * @property-read int|null $goods_categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Leguo\App\Models\Image> $images
+ * @property-read int|null $images_count
+ * @method static \Modules\Leguo\Database\Factories\GoodsFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods whereStockNum($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Goods whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Goods extends Model
 {
     use HasFactory;
