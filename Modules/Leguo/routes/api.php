@@ -36,7 +36,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'leguo'], function () {
 
     Route::apiResource('partner', PartnerController::class);
 
-    Route::apiResource('order', OrderController::class);
+    Route::apiResource('order', OrderController::class)->except(['update', 'destroy']);
 
     Route::post('images/upload', [ImageController::class, 'upload']);
 });

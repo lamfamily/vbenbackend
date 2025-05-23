@@ -5,6 +5,7 @@ namespace Modules\Leguo\App\Http\Controllers;
 use App\Enums\APICodeEnum;
 use Illuminate\Http\Request;
 use App\Enums\DefaultStatusEnum;
+use App\Enums\OrderStatusEnum;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Modules\Leguo\App\Models\Order;
@@ -122,17 +123,22 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order): JsonResponse
     {
-        echo "<pre>";
-        var_dump('update order');
-        echo "</pre>";
-        exit();
+        return api_res(APICodeEnum::EXCEPTION, j5_trans('禁止访问'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request, Order $order): JsonResponse
     {
-        //
+        // 不能真的删除，只能假删除
+        if ($order->status == OrderStatusEnum::DELETED) {
+            return api_res(APICodeEnum::EXCEPTION, j5_trans('数据不存在'));
+        }
+
+        $order->status = OrderStatusEnum::DELETED;
+        $order->save();
+
+        return api_res(APICodeEnum::SUCCESS, j5_trans('操作成功'), OrderResource::make($order));
     }
 }

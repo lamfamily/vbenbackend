@@ -42,11 +42,6 @@ class OrderService
             $total_amount = bcadd($total_amount, $amount, 2);
         }
 
-        echo "<pre>";
-        var_dump($total_amount);
-        echo "</pre>";
-        exit();
-
         // create order action
 
         DB::connection('leguo')->beginTransaction();

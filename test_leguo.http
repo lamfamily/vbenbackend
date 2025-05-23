@@ -189,7 +189,7 @@ Authorization: Bearer {{token}}
 Accept-Language: zh-TW
 
 ### get single order
-GET {{baseurl}}/leguo/order/1
+GET {{baseurl}}/leguo/order/2
 {{jsonHeaders}}
 Authorization: Bearer {{token}}
 Accept-Language: zh-TW
@@ -202,11 +202,11 @@ Accept-Language: zh-TW
 
 {
     "recipient": {
-        "first_name": "lam",
-        "last_name": "kakyun",
+        "first_name": "Lee",
+        "last_name": "nong",
         "phone": "0912345678",
-        "line_id": "lamkakyun_ln",
-        "email": "lamkakyun@gmail.com",
+        "line_id": "nong_ln",
+        "email": "lee@gmail.com",
         "address": "aaaaaaaa",
         "id_no": "1233",
         "remark": "pls add some text to the goods"
@@ -214,7 +214,7 @@ Accept-Language: zh-TW
     "goods_list": [
         {
             "goods_id": 20,
-            "goods_quantity": 2,
+            "goods_quantity": 3,
             "recipient": {
                 "first_name": "lam",
                 "last_name": "kakyun",
@@ -227,7 +227,17 @@ Accept-Language: zh-TW
         },
         {
             "goods_id": 19,
-            "goods_quantity": 3
+            "goods_quantity": 4
         }
     ]
+}
+
+### update order
+PUT {{baseurl}}/leguo/order/1
+{{jsonHeaders}}
+Authorization: Bearer {{token}}
+Accept-Language: zh-TW
+
+{
+
 }
